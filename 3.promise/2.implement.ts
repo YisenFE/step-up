@@ -25,7 +25,7 @@ export namespace _ {
     }
 
     export interface PromiseConstructor {
-        readonly prototype: Promise<any>;
+        // readonly prototype: Promise<any>;
 
         new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
     }
@@ -72,7 +72,7 @@ export class Promise_Sync<T> /* implements _.Promise<T> */ {
 }
 
 // 解决异步状态更新
-export class Promise_Async<T> implements _.Promise<T> {
+export class Promise_Async<T> /* implements _.Promise<T> */ {
     private status: string = 'pending';
     private value: any = undefined;
     private reason: any = undefined;
@@ -80,7 +80,7 @@ export class Promise_Async<T> implements _.Promise<T> {
     private onResolvedCallbacks: Function[] = [];
     private onRejectedCallbacks: Function[] = [];
 
-    private OwnConstructor: any;
+    private OwnConstructor: _.PromiseConstructor;
 
     constructor(executor: _.Executor<T>) {
         this.OwnConstructor = new.target;
@@ -112,21 +112,24 @@ export class Promise_Async<T> implements _.Promise<T> {
         onfulfilled?: _.Resolved<T, TResult1>,
         onrejected?: _.Rejected<TResult2>
     ) {
-        const promise2 = new this.OwnConstructor;
-        if (this.status === 'fulfilled') {
-            typeof onfulfilled === 'function' && onfulfilled(this.value);
-        }
-        if (this.status === 'rejected') {
-            typeof onrejected === 'function' &&  onrejected(this.reason);
-        }
-        if (this.status === 'pending') {
-            this.onResolvedCallbacks.push(() => {
+        const promise2 = new this.OwnConstructor((resolve, reject) => {
+            if (this.status === 'fulfilled') {
                 typeof onfulfilled === 'function' && onfulfilled(this.value);
-            });
-            this.onRejectedCallbacks.push(() => {
-                typeof onrejected === 'function' && onrejected(this.reason);
-            });
-        }
+            }
+            if (this.status === 'rejected') {
+                typeof onrejected === 'function' &&  onrejected(this.reason);
+            }
+            if (this.status === 'pending') {
+                this.onResolvedCallbacks.push(() => {
+                    typeof onfulfilled === 'function' && onfulfilled(this.value);
+                });
+                this.onRejectedCallbacks.push(() => {
+                    typeof onrejected === 'function' && onrejected(this.reason);
+                });
+            }
+        });
+
+        return promise2;
     }
 }
 

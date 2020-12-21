@@ -16,10 +16,6 @@ const _path = (p: string): string => {
 
 };
 
-new Promise((a, b) => {
-    a(1);
-}).then(res => {}).then(res => {})
-
 module promise31_sync {
     console.log('---------- sync ----------')
     const p = new Promise_Sync<string>((resolve, reject) => {
@@ -93,3 +89,5 @@ module promise31_async2 {
         });
     }
 }
+
+console.log('你好')

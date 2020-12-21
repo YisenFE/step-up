@@ -10,7 +10,6 @@
             "name": "ts",
             "runtimeExecutable": "ts-node",
             "runtimeArgs": [
-                "--skip-ignore",
                 "${file}"
             ]
         }
