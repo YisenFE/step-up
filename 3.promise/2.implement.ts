@@ -12,8 +12,8 @@ export namespace _ {
 
     export interface PromiseLike<T> {
         then<TResult1 = T, TResult2 = never>(
-            onfulfilled?: FulfillmentHandler<T, TResult1>,
-            onrejected?: RejectionHandler<TResult2>
+            onFulfilled?: FulfillmentHandler<T, TResult1>,
+            onRejected?: RejectionHandler<TResult2>
         ): PromiseLike<TResult1 | TResult2>;
     }
 
@@ -22,62 +22,22 @@ export namespace _ {
 
     export interface Promise<T> {
         then<TResult1 = T, TResult2 = never>(
-            onfulfilled?: FulfillmentHandler<T, TResult1>,
-            onrejected?: RejectionHandler<TResult2>
+            onFulfilled?: FulfillmentHandler<T, TResult1>,
+            onRejected?: RejectionHandler<TResult2>
         ): Promise<TResult1 | TResult2>;
 
-        // catch<TResult = never>(onrejected?: RejectionHandler<T>): Promise<T | TResult>;
+        // catch<TResult = never>(onRejected?: RejectionHandler<T>): Promise<T | TResult>;
     }
 
     export interface PromiseConstructor {
-        // readonly prototype: Promise<any>;
+        readonly prototype: Promise<any>;
 
         new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
     }
 }
 
-// 解决同步状态更新
-export class Promise_Sync<T> /* implements _.Promise<T> */ {
-    status: _.Status = 'pending';
-    value: any = undefined;
-    reason: any = undefined;
-    constructor(executor: _.Executor<T>) {
-        const resolve = (value: T | _.PromiseLike<T>) => {
-            if (this.status === 'pending') {
-                this.value = value;
-                this.status = 'fulfilled';
-            }
-        };
-        const reject = (reason: any) => {
-            if (this.status === 'pending') {
-                this.reason = reason;
-                this.status = 'rejected';
-            }
-        }
-
-        try {
-            executor(resolve, reject);
-        } catch (error) {
-            reject(error);
-        }
-    }
-
-
-    then<TResult1 = T, TResult2 = never>(
-        onfulfilled?: _.FulfillmentHandler<T, TResult1>,
-        onrejected?: _.RejectionHandler<TResult2>
-    ) {
-        if (this.status === 'fulfilled') {
-            typeof onfulfilled === 'function' && onfulfilled(this.value);
-        }
-        if (this.status === 'rejected') {
-            typeof onrejected === 'function' &&  onrejected(this.reason);
-        }
-    }
-}
-
 // 解决异步状态更新
-export class Promise_Async<T> /* implements _.Promise<T> */ {
+export class Promise<T> implements _.Promise<T> {
     private status: _.Status = 'pending';
     private value: any = undefined;
     private reason: any = undefined;
@@ -85,11 +45,7 @@ export class Promise_Async<T> /* implements _.Promise<T> */ {
     private onResolvedCallbacks: Function[] = [];
     private onRejectedCallbacks: Function[] = [];
 
-    // private OwnConstructor: _.PromiseConstructor;
-
     constructor(executor: _.Executor<T>) {
-        // this.OwnConstructor = new.target;
-
         const resolve = (value: T | _.PromiseLike<T>) => {
             if (this.status === 'pending') {
                 this.value = value;
@@ -113,21 +69,20 @@ export class Promise_Async<T> /* implements _.Promise<T> */ {
         }
     }
 
-    then<TResult1 = T, TResult2 = never>(
-        onfulfilled?: _.FulfillmentHandler<T, TResult1>,
-        onrejected?: _.RejectionHandler<TResult2>
+    public then<TResult1 = T, TResult2 = never>(
+        onFulfilled?: _.FulfillmentHandler<T, TResult1>,
+        onRejected?: _.RejectionHandler<TResult2>
     ): _.Promise<TResult1 | TResult2> {
+        const PConstructor: _.PromiseConstructor = (Object.getPrototypeOf(this).constructor);
 
-        const PConstructor: _.PromiseConstructor = (Object.getPrototypeOf(this).constructor)
-        const promise2= new PConstructor<TResult1 | TResult2>((resolve, reject) => {
-
-            let _onfulfilled = typeof onfulfilled === 'function' ? onfulfilled : (value: any) => value;
-            let _onrejected = typeof onrejected === 'function' ? onrejected : (reason: any) => reason;
+        const promise2 = new PConstructor<TResult1 | TResult2>((resolve, reject) => {
+            let _onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : (value: T) => value;
+            let _onRejected = typeof onRejected === 'function' ? onRejected : (err: any) => { throw err };
 
             if (this.status === 'fulfilled') {
                 setTimeout(() => {
                     try {
-                        let x = _onfulfilled(this.value);
+                        let x = _onFulfilled(this.value);
                         this._resolvePromise(promise2, x, resolve, reject);
                     } catch (error) {
                         reject(error);
@@ -137,7 +92,7 @@ export class Promise_Async<T> /* implements _.Promise<T> */ {
             if (this.status === 'rejected') {
                 setTimeout(() => {
                     try {
-                        let x = _onrejected(this.reason);
+                        let x = _onRejected(this.reason);
                         this._resolvePromise(promise2, x, resolve, reject);
                     } catch (error) {
                         reject(error);
@@ -148,7 +103,7 @@ export class Promise_Async<T> /* implements _.Promise<T> */ {
                 this.onResolvedCallbacks.push(() => {
                     setTimeout(() => {
                         try {
-                            let x = _onfulfilled(this.value);
+                            let x = _onFulfilled(this.value);
                             this._resolvePromise(promise2, x, resolve, reject);
                         } catch (error) {
                             reject(error);
@@ -158,7 +113,7 @@ export class Promise_Async<T> /* implements _.Promise<T> */ {
                 this.onRejectedCallbacks.push(() => {
                     setTimeout(() => {
                         try {
-                            let x = _onrejected(this.reason);
+                            let x = _onRejected(this.reason);
                             this._resolvePromise(promise2, x, resolve, reject);
                         } catch (error) {
                             reject(error);
@@ -185,12 +140,13 @@ export class Promise_Async<T> /* implements _.Promise<T> */ {
             try {
                 const then = x.then;
                 if (typeof then === 'function') {
-                    then.call(x, (x: T) => {
-                        resolve(x);
-                    }, (y: any) => {
-                        reject(y);
-                    });
                     // x.then() // 有可能第一次取值报错，第二次取值不报错
+                    then.call(x, (y: T) => {
+                        // resolve(y);
+                        this._resolvePromise(promise2, y, resolve, reject);
+                    }, (r: any) => {
+                        reject(r);
+                    });
                 } else {
                     resolve(x);
                 }
