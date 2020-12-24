@@ -2,15 +2,12 @@
  * @file promise使用介绍
  */
 /// <reference path="../types/node.d.ts"/>
-// import { _, Promise } from './2.implement';
+import { Promise } from './promise';
 
 import fs from 'fs';
 import path, { resolve } from 'path';
 
-const _path = (p: string): string => {
-    return path.resolve(__dirname, p);
-
-};
+const _path = (p: string): string => path.resolve(__dirname, p);
 
 /** 同步状态变更 */
 module promise31_0 {

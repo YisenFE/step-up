@@ -5,9 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "command": "promises-aplus-tests ${relativeFile}",
+            "name": "Run promises-aplus-tests",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
             "type": "node",
             "request": "launch",
-            "name": "ts",
+            "name": "Run file",
             "runtimeExecutable": "ts-node",
             "runtimeArgs": [
                 "${file}"
