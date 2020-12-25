@@ -67,14 +67,14 @@ module promise31_2 {
     // p.then(val => {
     //     console.log('[SUCCESS] ', val);
     //     return new Promise((resolve, reject) => {
-    //         window.setTimeout(() => {
+    //         setTimeout(() => {
     //             reject('同步成功状态转为异步失败状态');
     //         });
     //     });
     // }, err => {
     //     console.log('[FAIL] ', err);
     //     return new Promise((resolve, reject) => {
-    //         window.setTimeout(() => {
+    //         setTimeout(() => {
     //             resolve('同步失败状态转为异步成功状态');
     //         });
     //     });
@@ -85,7 +85,7 @@ module promise31_2 {
     // });
 
     // const p1 = new Promise<string>((resolve, reject) => {
-    //     window.setTimeout(() => {
+    //     setTimeout(() => {
     //         resolve('异步成功');
     //         // reject('异步失败');
 
@@ -161,16 +161,28 @@ module promise31_5 {
 
 /** resolve参数是promise */
 module promise31_6 {
-    const p = new Promise<number>((resolve, reject) => {
-        resolve(new Promise((res, rej) => {
-            res(123);
+    // const p = new Promise<number>((resolve, reject) => {
+    //     resolve(new Promise((res, rej) => {
+    //         res(123);
+    //     }));
+    // });
+
+    // p.then((res) => {
+    //     console.log(res);
+    // }, err => {
+    //     console.log(err);
+    // });
+
+    const p2 = new Promise<number>((resolve, reject) => {
+        reject(new Promise((res, rej) => {
+            setTimeout(() => {
+                rej(123);
+            }, 1000);
         }));
     });
-
-    const p2: any = p.then(data => {
-        return p2;
-    });
-    p2.then(null, (data: any) => {
-        console.log(data);
+    p2.then((res) => {
+        console.log(res, 'success');
+    }, err => {
+        console.log(err, 'err');
     });
 }

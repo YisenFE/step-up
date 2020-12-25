@@ -5,9 +5,6 @@ import { resolve } from "path";
  */
 
 export namespace _ {
-    export type InternalResolve<T> = (value: T | PromiseLike<T>) => void;
-    export type InternalReject = (reason?: any) => void;
-
     export type FulfillmentHandler<T, TResult> = ((value: T) => TResult | PromiseLike<TResult>) | undefined | null;
     export type RejectionHandler<TResult> = ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null;
     export type FinallyHandler = (() => void) | undefined | null;
@@ -20,7 +17,7 @@ export namespace _ {
     }
 
 
-    export type Executor<T> = (resolve: InternalResolve<T>, reject: InternalReject) => void;
+    export type Executor<T> = (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void;
 
     export interface Promise<T> {
         then<TResult1 = T, TResult2 = never>(
@@ -54,6 +51,9 @@ export namespace _ {
         all<T1, T2>(values: readonly [T1 | PromiseLike<T1>, T2 | PromiseLike<T2>]): Promise<[T1, T2]>;
         all<T>(values: readonly [T | PromiseLike<T>]): Promise<T[]>;
         all<T>(values: Iterable<T | PromiseLike<T>>): Promise<T[]>;
+
+        race<T>(values: readonly T[]): Promise<T extends PromiseLike<infer U> ? U : T>;
+        race<T>(values: Iterable<T>): Promise<T extends PromiseLike<infer U> ? U : T>;
     }
 }
 
@@ -71,23 +71,32 @@ export class Promise<T> implements _.Promise<T> {
     private onRejectedCallbacks: Function[] = [];
 
     constructor(executor: _.Executor<T>) {
-        const resolve = (v: T | _.PromiseLike<T>) => {
+        const P: _.PromiseConstructor = (Object.getPrototypeOf(this)).constructor;
+
+
+        const _f = (v: T) => {
             if (this._state === State.Pending) {
                 this._value = v;
                 this._state = State.FulFilled;
                 this.onResolvedCallbacks.forEach(cb => cb());
             }
         };
-        const reject = (r: any) => {
+        const _r = (r: any) => {
             if (this._state === State.Pending) {
                 this._reason = r;
                 this._state = State.Rejected;
                 this.onRejectedCallbacks.forEach(cb => cb());
-                if (!this.onRejectedCallbacks.length) {
-                    console.error(new Error(' (in promise) ' + this._reason.toString()));
+
+                if (!(r && r.then) && !this.onRejectedCallbacks.length) {
+                    console.error(new Error(' (in promise) ' + this._reason));
                 }
             }
-        }
+        };
+
+        const resolve = (v: T | _.PromiseLike<T>) => {
+            this._resolvePromise(this, v, _f, _r);
+        };
+        const reject = _r;
 
         try {
             executor(resolve, reject);
@@ -168,31 +177,29 @@ export class Promise<T> implements _.Promise<T> {
     }
 
     static resolve<T>(v: T | _.PromiseLike<T>): _.Promise<T> {
-        const P: _.PromiseConstructor = Object.getPrototypeOf(this).constructor;
-        return new P(resolve => {
+        return new this((resolve, reject) => {
             resolve(v);
         });
     }
 
     static reject<T>(r: any): _.Promise<T> {
-        const P: _.PromiseConstructor = Object.getPrototypeOf(this).constructor;
-        return new P((resolve, reject) => {
+        return new this((resolve, reject) => {
             reject(r);
         });
     }
 
-    static all<T extends any[]>(values: T): _.Promise<{ [K in keyof T]: T[K] extends _.PromiseLike<infer R> ? R : T[K] }> {
-        const P: _.PromiseConstructor = Object.getPrototypeOf(this).constructor;
+    static all<T extends any[]>(promises: readonly [...T]): _.Promise<{ [K in keyof T]: T[K] extends _.PromiseLike<infer R> ? R : T[K] }> {
+        const P = this;
         return new P((resolve, reject) => {
-            let len = values.length;
+            const len = promises.length;
             let remaining = len;
 
             const results: { [K in keyof T]: T[K] extends _.PromiseLike<infer R> ? R : T[K] } = new Array(len) as any;
             for (let i = 0; i < len; i++) {
-                fllow(values[i], i);
+                fllow(promises[i], i);
             }
 
-            function fllow<T>(t: T | _.PromiseLike<T>, index: number): void {
+            function fllow(t: T | _.PromiseLike<T>, index: number): void {
                 P.resolve(t).then(v => {
                     results[index] = v;
                     remaining--;
@@ -206,11 +213,32 @@ export class Promise<T> implements _.Promise<T> {
         });
     }
 
+    static race<T>(promises: readonly T[]): _.Promise<T extends _.PromiseLike<infer U> ? U : T> {
+        const P = this;
+        return new Promise((resolve, reject) => {
+            const len = promises.length;
+            let i = 0;
+            while (i < len) {
+                fllow(promises[i]);
+                i++;
+            }
+
+            function fllow(t: T | _.PromiseLike<T>): void {
+                P.resolve(t).then(v => {
+                    i = len;
+                    resolve(v as any);
+                }).catch(r => {
+                    reject(r);
+                });
+            }
+        });
+    }
+
     private _resolvePromise<T>(
         promise2: _.Promise<T>,
         x: any,
-        resolve: _.InternalResolve<T>,
-        reject: _.InternalReject
+        resolve: (value: T) => void,
+        reject: (reason?: any) => void
     ): void {
         if (promise2 === x) {
             return reject(new TypeError('循环引用'));
