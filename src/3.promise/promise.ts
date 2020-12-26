@@ -1,5 +1,3 @@
-import { resolve } from "path";
-
 /**
  * @file promise实现
  */
@@ -27,7 +25,7 @@ export namespace _ {
 
         catch<TResult = never>(onRejected?: RejectionHandler<TResult>): Promise<T | TResult>;
 
-        finally(onfinally?: FinallyHandler): Promise<T>;
+        finally(onFinally?: FinallyHandler): Promise<T>;
     }
 
     export interface PromiseConstructor {
@@ -71,9 +69,6 @@ export class Promise<T> implements _.Promise<T> {
     private onRejectedCallbacks: Function[] = [];
 
     constructor(executor: _.Executor<T>) {
-        const P: _.PromiseConstructor = (Object.getPrototypeOf(this)).constructor;
-
-
         const _f = (v: T) => {
             if (this._state === State.Pending) {
                 this._value = v;
@@ -81,7 +76,7 @@ export class Promise<T> implements _.Promise<T> {
                 this.onResolvedCallbacks.forEach(cb => cb());
             }
         };
-        const _r = (r: any) => {
+        const _r = (r?: any) => {
             if (this._state === State.Pending) {
                 this._reason = r;
                 this._state = State.Rejected;
@@ -113,8 +108,8 @@ export class Promise<T> implements _.Promise<T> {
         const P: _.PromiseConstructor = (Object.getPrototypeOf(this).constructor);
 
         const promise2 = new P<TResult1 | TResult2>((resolve, reject) => {
-            let _onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : (v: T) => v;
-            let _onRejected = typeof onRejected === 'function' ? onRejected : (err: any) => { throw err };
+            const _onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : (v: T) => v;
+            const _onRejected = typeof onRejected === 'function' ? onRejected : (err: any) => { throw err };
 
             if (this._state === State.FulFilled) {
                 setTimeout(() => {
@@ -167,8 +162,8 @@ export class Promise<T> implements _.Promise<T> {
         return this.then(null, onRejected);
     }
 
-    public finally(cb?: _.FinallyHandler) {
-        const _cb = typeof cb === 'function' ? cb : () => {};
+    public finally(onFinally?: _.FinallyHandler) {
+        const _cb = typeof onFinally === 'function' ? onFinally : () => {};
         const P: _.PromiseConstructor = (Object.getPrototypeOf(this)).constructor;
         return this.then(
             v => P.resolve(_cb()).then(() => v),
@@ -255,7 +250,7 @@ export class Promise<T> implements _.Promise<T> {
                         called = true;
                         // resolve(v);
                         this._resolvePromise(promise2, v, resolve, reject);
-                    }, (r: any) => {
+                    }, (r?: any) => {
                         if (called) return;
                         called = true;
                         reject(r);

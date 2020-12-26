@@ -1,7 +1,7 @@
 /**
  * @file promise使用介绍
  */
-/// <reference path="../types/node.d.ts"/>
+/// <reference path="../../types/node.d.ts"/>
 import { Promise } from './promise';
 
 import fs from 'fs';

@@ -3,7 +3,7 @@
  * Object.defineProperty 不支持数组的更新 push slice
  * 希望数组变化就能更新视图
  */
-/// <reference path="../types/index.d.ts" />
+/// <reference path="../../types/index.d.ts" />
 
 module es63_1 {
     function update() {

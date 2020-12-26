@@ -1,4 +1,4 @@
-/// <reference path="../types/index.d.ts" />
+/// <reference path="../../types/index.d.ts" />
 /**
  * @file 发布订阅
  */

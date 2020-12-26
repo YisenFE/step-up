@@ -1,4 +1,4 @@
-/// <reference path="../types/index.d.ts" />
+/// <reference path="../../types/index.d.ts" />
 /**
  * @file Object.defineProperty es5 vue
  */
