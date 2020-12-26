@@ -1,13 +1,10 @@
 /**
  * @file promise使用介绍
  */
-/// <reference path="../../types/node.d.ts"/>
 import { Promise } from './promise';
 
 import fs from 'fs';
-import path, { resolve } from 'path';
-
-const _path = (p: string): string => path.resolve(__dirname, p);
+import { _path } from '../../utils/path';
 
 /** 同步状态变更 */
 module promise31_0 {
@@ -110,7 +107,7 @@ module promise31_2 {
 
 /** then返回promise */
 module promise31_3 {
-    // read(_path('../name.txt')).then(data => {
+    // read(_path('name.txt')).then(data => {
     //     return read(_path(data));
     // }).then(data => {
     //     console.log(data);

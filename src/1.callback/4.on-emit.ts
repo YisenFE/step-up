@@ -3,11 +3,7 @@
  * @file 发布订阅
  */
 import fs from 'fs';
-import path from 'path';
-
-const _path = (p: string): string => {
-    return path.resolve(__dirname, p);
-};
+import { _path } from '../../utils/path';
 
 module callback4_1 {
     type OnEmit = {
@@ -36,12 +32,12 @@ module callback4_1 {
         console.log('读取了一个');
     });
 
-    fs.readFile(_path('../name.txt'), 'utf8', (err, data) => {
+    fs.readFile(_path('name.txt'), 'utf8', (err, data) => {
         school.name = data;
         event.emit();
     });
 
-    fs.readFile(_path('../age.txt'), 'utf8', (err, data) => {
+    fs.readFile(_path('age.txt'), 'utf8', (err, data) => {
         school.age = data;
         event.emit();
     });
@@ -72,12 +68,12 @@ module callback4_1 {
         console.log('读取了一个');
     });
 
-    fs.readFile(_path('../name.txt'), 'utf8', (err, data) => {
+    fs.readFile(_path('name.txt'), 'utf8', (err, data) => {
         school.name = data;
         event.emit();
     });
 
-    fs.readFile(_path('../age.txt'), 'utf8', (err, data) => {
+    fs.readFile(_path('age.txt'), 'utf8', (err, data) => {
         school.age = data;
         event.emit();
     });

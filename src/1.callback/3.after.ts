@@ -3,11 +3,7 @@
  * @file after
  */
 import fs from 'fs';
-import path from 'path';
-
-const _path = (p: string): string => {
-    return path.resolve(__dirname, p);
-};
+import { _path } from '../../utils/path';
 
 module callback3_1 {
     const school: {name?: string, age?: string} = {};
@@ -18,12 +14,12 @@ module callback3_1 {
             console.log(school);
         }
     }
-    fs.readFile(_path('../name.txt'), 'utf8', (err, data) => {
+    fs.readFile(_path('name.txt'), 'utf8', (err, data) => {
         school.name = data;
         cb();
     });
 
-    fs.readFile(_path('../age.txt'), 'utf8', (err, data) => {
+    fs.readFile(_path('age.txt'), 'utf8', (err, data) => {
         school.age = data;
         cb();
     });
@@ -43,12 +39,12 @@ module callback3_2 {
     let cb = after(2, function() {
         console.log(school);
     });
-    fs.readFile(_path('../name.txt'), 'utf8', (err, data) => {
+    fs.readFile(_path('name.txt'), 'utf8', (err, data) => {
         school.name = data;
         cb();
     });
 
-    fs.readFile(_path('../age.txt'), 'utf8', (err, data) => {
+    fs.readFile(_path('age.txt'), 'utf8', (err, data) => {
         school.age = data;
         cb();
     });

@@ -1,13 +1,10 @@
 /**
  * @file promise原型方法
  */
-/// <reference path="../../types/node.d.ts"/>
 import { Promise } from './promise';
 
 import fs from 'fs';
-import path, { resolve } from 'path';
-
-const _path = (p: string): string => path.resolve(__dirname, p);
+import { _path } from '../../utils/path';
 
 /** 延迟对象 */
 module promise32_0 {
@@ -19,7 +16,7 @@ module promise32_0 {
     //     });
     //     return defer.promise;
     // }
-    // read(_path('../name.txt')).then((data: string) => {
+    // read(_path('name.txt')).then((data: string) => {
     //     console.log(data);
     // });
 }
