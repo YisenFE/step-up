@@ -1,4 +1,4 @@
-/// <reference path="../../types/function.d.ts" />
+/// <reference path="../../../types/function.d.ts" />
 /**
  * @file 高阶函数
  * 什么是高阶函数：

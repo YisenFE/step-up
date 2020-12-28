@@ -1,9 +1,9 @@
-/// <reference path="../../types/index.d.ts" />
+/// <reference path="../../../types/index.d.ts" />
 /**
  * @file after
  */
 import fs from 'fs';
-import { _path } from '../../utils/path';
+import { _path } from '../../../utils/path';
 
 module callback3_1 {
     const school: {name?: string, age?: string} = {};

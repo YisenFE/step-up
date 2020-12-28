@@ -1,9 +1,9 @@
-/// <reference path="../../types/index.d.ts" />
+/// <reference path="../../../types/index.d.ts" />
 /**
  * @file 发布订阅
  */
 import fs from 'fs';
-import { _path } from '../../utils/path';
+import { _path } from '../../../utils/path';
 
 module callback4_1 {
     type OnEmit = {

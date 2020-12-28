@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { _path } from '../../utils/path';
+import { _path } from '../../../utils/path';
 import { Promise } from './promise';
 
 namespace _ {

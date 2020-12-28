@@ -31,7 +31,11 @@ export namespace _ {
     export interface PromiseConstructor {
         readonly prototype: Promise<any>;
 
-        new <T>(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void): Promise<T>;
+        new <T>(
+            executor: (
+                resolve: (value: T | PromiseLike<T>) => void,
+                reject: (reason?: any) => void) => void
+        ): Promise<T>;
 
         resolve(): Promise<void>;
         resolve<T>(value: T | PromiseLike<T>): Promise<T>;

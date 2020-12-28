@@ -4,7 +4,7 @@
 import { Promise } from './promise';
 
 import fs from 'fs';
-import { _path } from '../../utils/path';
+import { _path } from '../../../utils/path';
 
 /** 延迟对象 */
 module promise32_0 {
