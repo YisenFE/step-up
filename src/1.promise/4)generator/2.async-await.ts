@@ -5,7 +5,7 @@ export const fn = async () => {
 
 export var __awaiter: (
     thisArg: any, _arguments: Iterable<any>, P: PromiseConstructor, generator: Generator
-) => Promise<unknown> = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+) => Promise<unknown> = (this && (this as any).__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value: any) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value: any) { try { step(generator.next(value)); } catch (e) { reject(e); } }

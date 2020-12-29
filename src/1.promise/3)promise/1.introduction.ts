@@ -4,7 +4,7 @@
 import { Promise } from './promise';
 
 import fs from 'fs';
-import { _path } from '../../../utils/path';
+import { _path } from '../../utils/path';
 
 /** 同步状态变更 */
 module promise31_0 {

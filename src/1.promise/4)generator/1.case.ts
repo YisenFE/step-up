@@ -3,7 +3,7 @@
  */
 
 import { resolve } from 'path';
-import { _path } from '../../../utils/path';
+import { _path } from '../../utils/path';
 // namespace _ {
 //     export const obj: {
 //         [key: string]: any,
