@@ -1,4 +1,4 @@
-import fs, { statSync } from 'fs';
+import fs from 'fs';
 import path from 'path';
 
 /** 同步递归创建文件夹 */
