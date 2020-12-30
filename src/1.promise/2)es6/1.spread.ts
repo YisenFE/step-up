@@ -25,5 +25,5 @@ module es61_1 {
         return cloneObj;
     }
 
-    console.log(deepClone(1))
+    // console.log(deepClone(1));
 }
