@@ -1,4 +1,3 @@
-/// <reference path="../../../types/index.d.ts" />
 /**
  * @file 发布订阅
  */
@@ -7,28 +6,30 @@ import { _path } from '../../utils/path';
 
 module callback4_1 {
     type OnEmit = {
-        arr: Func[];
-        on: (fn: Func) => void;
-        emit: Func<[], void>
-    }
+        arr: Function[];
+        on: (fn: Function) => void;
+        emit: Function
+    };
+
     const event: OnEmit = {
         arr: [],
-        on(fn: Func) {
+        on(fn: Function) {
             this.arr.push(fn);
         },
         emit() {
             this.arr.forEach(fn => fn());
         }
     };
+
     const school: {name?: string, age?: string} = {};
 
-    event.on(function() {
+    event.on(() => {
         if (Object.keys(school).length === 2) {
             console.log(school);
         }
     });
 
-    event.on(function() {
+    event.on(() => {
         console.log('读取了一个');
     });
 
@@ -45,9 +46,9 @@ module callback4_1 {
 
 module callback4_1 {
     class EventEmitter {
-        private _arr: Func[] = [];
+        private _arr: Function[] = [];
 
-        on(cb: Func) {
+        on(cb: Function) {
             this._arr.push(cb);
         }
         emit() {
@@ -58,13 +59,13 @@ module callback4_1 {
 
     const event = new EventEmitter();
 
-    event.on(function() {
+    event.on(() => {
         if (Object.keys(school).length === 2) {
             console.log(school);
         }
     });
 
-    event.on(function() {
+    event.on(() => {
         console.log('读取了一个');
     });
 

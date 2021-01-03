@@ -25,8 +25,13 @@ module es64_1 {
                 console.log("g(): called");
             };
         }
+        function c(constructor: Function) {
+            console.log(constructor);
+        }
 
+        @c
         class C {
+            constructor() {}
             @f()
             @g()
             method() { }
@@ -61,15 +66,15 @@ module es64_2 {
         // (Greeter as any).a = 1 // ERROR: object is not extensible
         // Greeter.prototype.a = () => {}; // ERROR: object is not extensible
     }
-    fn();
+    // fn();
 }
 
 module es64_3 {
     function fn() {
         function classDecorator<T extends { new (...p: any[]): {} }>(
-            construct: T
+            constructor: T
         ) {
-            return class extends construct {
+            return class extends constructor {
                 newProperty = 'new property';
                 hello = 'override';
             };
@@ -86,7 +91,7 @@ module es64_3 {
 
         console.log(new Greeter('world'));
     }
-    fn();
+    // fn();
 }
 
 module es64_4 {
@@ -114,7 +119,7 @@ module es64_4 {
 
         console.log(Greeter.prototype)
     }
-    fn();
+    // fn();
 }
 
 module es64_5 {
@@ -148,4 +153,5 @@ module es64_5 {
             }
         }
     }
+    // fn();
 }

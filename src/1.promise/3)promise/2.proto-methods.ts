@@ -21,7 +21,7 @@ module promise32_0 {
             console.log(data);
         });
     }
-    // fn();
+    fn();
 }
 
 module promise32_1 {
@@ -84,6 +84,6 @@ module promise32_1 {
         });
     }
 
-    // fn1();
-    // fn2();
+    fn1();
+    fn2();
 }

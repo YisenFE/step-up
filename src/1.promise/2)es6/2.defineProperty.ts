@@ -13,10 +13,11 @@ module es62_1 {
             configurable: true, // delete obj.name;
             // writable: true, // 是否可以重写
             get() {
-                console.log('get')
+                console.log('get');
                 return other;
             },
             set(val) {
+                console.log('set');
                 other = val;
             }
         });
@@ -25,7 +26,7 @@ module es62_1 {
         obj.name = 1;
         console.log(obj.name);
     }
-    // fn();
+    fn();
 }
 
 module es62_2 {
@@ -87,5 +88,4 @@ module es62_2 {
         });
     }
     // fn();
-
 }

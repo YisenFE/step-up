@@ -4,7 +4,6 @@
 
 import { resolve } from 'path';
 import { _path } from '../../utils/path';
-import { fn } from './2.async-await';
 
 namespace _ {
     const obj: {
@@ -31,7 +30,7 @@ namespace _ {
         const arr = [...obj];
         console.log(arr);
     }
-    // fn();
+    fn();
 }
 
 namespace _1 {
@@ -54,7 +53,7 @@ namespace _1 {
         const arr = [...obj];
         console.log(arr);
     }
-    // fn();
+    fn();
 }
 
 namespace _2 {
@@ -74,7 +73,7 @@ namespace _2 {
         console.log(it.next(200));
         console.log(it.next(300));
     }
-    // fn();
+    fn();
 }
 
 namespace _3 {
@@ -97,7 +96,7 @@ namespace _3 {
             });
         });
     }
-    // fn();
+    fn();
 }
 
 namespace _4 {
@@ -129,5 +128,5 @@ namespace _4 {
             console.log(err);
         });
     }
-    // fn();
+    fn();
 }

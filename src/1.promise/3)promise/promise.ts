@@ -14,7 +14,6 @@ export namespace _ {
         ): PromiseLike<TResult1 | TResult2>;
     }
 
-
     export type Executor<T> = (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void;
 
     export interface Promise<T> {
@@ -69,24 +68,24 @@ export class Promise<T> implements _.Promise<T> {
     private _value: any = undefined;
     private _reason: any = undefined;
 
-    private onResolvedCallbacks: Function[] = [];
-    private onRejectedCallbacks: Function[] = [];
+    private _onResolvedCallbacks: Function[] = [];
+    private _onRejectedCallbacks: Function[] = [];
 
     constructor(executor: _.Executor<T>) {
         const _f = (v: T) => {
             if (this._state === State.Pending) {
                 this._value = v;
                 this._state = State.FulFilled;
-                this.onResolvedCallbacks.forEach(cb => cb());
+                this._onResolvedCallbacks.forEach(cb => cb());
             }
         };
         const _r = (r?: any) => {
             if (this._state === State.Pending) {
                 this._reason = r;
                 this._state = State.Rejected;
-                this.onRejectedCallbacks.forEach(cb => cb());
+                this._onRejectedCallbacks.forEach(cb => cb());
 
-                if (!(r && r.then) && !this.onRejectedCallbacks.length) {
+                if (!(r && r.then) && !this._onRejectedCallbacks.length) {
                     console.error(new Error(' (in promise) ' + this._reason));
                 }
             }
@@ -136,7 +135,7 @@ export class Promise<T> implements _.Promise<T> {
                 });
             }
             if (this._state === State.Pending) {
-                this.onResolvedCallbacks.push(() => {
+                this._onResolvedCallbacks.push(() => {
                     setTimeout(() => {
                         try {
                             let x = _onFulfilled(this._value);
@@ -146,7 +145,7 @@ export class Promise<T> implements _.Promise<T> {
                         }
                     })
                 });
-                this.onRejectedCallbacks.push(() => {
+                this._onRejectedCallbacks.push(() => {
                     setTimeout(() => {
                         try {
                             let x = _onRejected(this._reason);

@@ -29,7 +29,7 @@ module promise31_0 {
             console.log('[FAIL] ', '测试成功：链式调用then', err)
         });
     }
-    // fn();
+    fn();
 }
 
 /** 异步状态变更 */
@@ -58,7 +58,7 @@ module promise31_1 {
             console.log('[FAIL] ', '测试成功：链式调用then', err)
         });
     }
-    // fn();
+    fn();
 }
 
 /** 同异步结合 */
@@ -113,8 +113,8 @@ module promise31_2 {
         });
     }
 
-    // fn1();
-    // fn2();
+    fn1();
+    fn2();
 }
 
 /** then返回promise */
@@ -136,7 +136,7 @@ module promise31_3 {
             });
         }
     }
-    // fn();
+    fn();
 }
 
 /** 捕获错误 */
@@ -157,7 +157,7 @@ module promise31_4 {
             console.log('[FAIL] ', err);
         });
     }
-    // fn();
+    fn();
 }
 
 /** 循环引用 */
@@ -174,7 +174,7 @@ module promise31_5 {
             console.log(data);
         });
     }
-    // fn();
+    fn();
 }
 
 /** resolve参数是promise */
@@ -207,6 +207,6 @@ module promise31_6 {
         });
     }
 
-    // fn1();
-    // fn2();
+    fn1();
+    fn2();
 }

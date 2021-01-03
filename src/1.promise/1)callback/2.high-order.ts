@@ -15,7 +15,7 @@ module callback2_1 {
         return Object.prototype.toString.call(value) === `[object ${type}]`;
     }
 
-    // console.log(isType([], 'Array'));
+    console.log(isType([], 'Array'));
 
     // 能不能将方法进行细分 isType => isString isArray
 }

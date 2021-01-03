@@ -1,5 +1,5 @@
 /**
- * fs
+ * @file fs
  */
 import fs from 'fs';
 import { _path } from '../../utils/path';
@@ -13,7 +13,7 @@ namespace _ {
             });
         });
     }
-    // fn();
+    fn();
 }
 // 针对大文件上述方法不可行，（全部读完，再全部写入）
 
@@ -30,7 +30,7 @@ namespace _1 {
             });
         });
     }
-    // fn();
+    fn();
 }
 
 namespace _2 {
@@ -44,7 +44,7 @@ namespace _2 {
             });
         });
     }
-    // fn();
+    fn();
 }
 
 namespace _3 {
@@ -70,5 +70,5 @@ namespace _3 {
             });
         });
     }
-    // copy(_path('fs.txt'), _path('fs1.txt'));
+    copy(_path('fs.txt'), _path('fs1.txt'));
 }

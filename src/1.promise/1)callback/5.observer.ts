@@ -19,7 +19,6 @@ module callback5_1 {
             this.state = newState;
             this.observers.forEach((o: Observer) => o.update(this));
         }
-
     }
 
     class Observer { // 观察者 我 我媳妇
