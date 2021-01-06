@@ -37,12 +37,8 @@ module es64_1 {
             method() { }
         }
         var a = new C();
-        // f(): evaluated
-        // g(): evaluated
-        // g(): called
-        // f(): called
     }
-    fn();
+    // fn();
 }
 
 module es64_2 {
@@ -90,12 +86,19 @@ module es64_3 {
         }
 
         console.log(new Greeter('world'));
+        /**
+         * Greeter {
+         *      property: 'property',
+         *      hello: 'override',
+         *      newProperty: 'new property'
+         * }
+         */
     }
     // fn();
 }
 
 module es64_4 {
-    function fn() {
+    function fn(boo: boolean) {
         function enumrable(value: boolean) {
             return function(
                 target: any,
@@ -103,6 +106,7 @@ module es64_4 {
                 descriptor: PropertyDescriptor
             ) {
                 descriptor.enumerable = value;
+                console.log(target, propertyKey, descriptor);
             };
         }
         class Greeter {
@@ -111,7 +115,7 @@ module es64_4 {
                 this.greeting = message;
             }
 
-            // @enumrable(true)
+            @enumrable(boo)
             greet() {
                 return 'hello, ' + this.greeting;
             }
@@ -119,7 +123,8 @@ module es64_4 {
 
         console.log(Greeter.prototype)
     }
-    // fn();
+    // fn(true); // Greeter { greet: [Function: greet] }
+    // fn(false); // Greeter {}
 }
 
 module es64_5 {
@@ -152,6 +157,9 @@ module es64_5 {
                 return this._y;
             }
         }
+
+        var point = new Point(1, 2);
+        console.log(point.x, point.y);
     }
-    // fn();
+    fn();
 }

@@ -33,7 +33,8 @@ export namespace _ {
         new <T>(
             executor: (
                 resolve: (value: T | PromiseLike<T>) => void,
-                reject: (reason?: any) => void) => void
+                reject: (reason?: any) => void
+            ) => void
         ): Promise<T>;
 
         resolve(): Promise<void>;
@@ -65,7 +66,7 @@ const enum State {
 }
 export class Promise<T> implements _.Promise<T> {
     private _state = State.Pending;
-    private _value: any = undefined;
+    private _value: T | undefined = undefined;
     private _reason: any = undefined;
 
     private _onResolvedCallbacks: Function[] = [];
@@ -117,7 +118,7 @@ export class Promise<T> implements _.Promise<T> {
             if (this._state === State.FulFilled) {
                 setTimeout(() => {
                     try {
-                        let x = _onFulfilled(this._value);
+                        let x = _onFulfilled(this._value as T);
                         this._resolvePromise(promise2, x, resolve, reject);
                     } catch (error) {
                         reject(error);
@@ -138,12 +139,12 @@ export class Promise<T> implements _.Promise<T> {
                 this._onResolvedCallbacks.push(() => {
                     setTimeout(() => {
                         try {
-                            let x = _onFulfilled(this._value);
+                            let x = _onFulfilled(this._value as T);
                             this._resolvePromise(promise2, x, resolve, reject);
                         } catch (error) {
                             reject(error);
                         }
-                    })
+                    });
                 });
                 this._onRejectedCallbacks.push(() => {
                     setTimeout(() => {
