@@ -13,7 +13,7 @@ namespace _ {
             });
         });
     }
-    fn();
+    // fn();
 }
 // 针对大文件上述方法不可行，（全部读完，再全部写入）
 
@@ -30,7 +30,7 @@ namespace _1 {
             });
         });
     }
-    fn();
+    // fn();
 }
 
 namespace _2 {
@@ -40,11 +40,11 @@ namespace _2 {
             if (err) throw err;
             fs.write(fd, buffer, 0, buffer.length, 10, (err, written, buffer) => {
                 if (err) throw err;
-                console.log(written, buffer);
+                console.log(written, buffer, buffer.toString());
             });
         });
     }
-    fn();
+    // fn();
 }
 
 namespace _3 {
@@ -52,6 +52,7 @@ namespace _3 {
         const bufferAlloc = Buffer.alloc(3);
         fs.open(source, 'r', (err, rfd) => {
             fs.open(target, 'w', (err, wfd) => {
+                next();
                 function next() {
                     fs.read(rfd, bufferAlloc, 0, bufferAlloc.length, null, (err, bytesRead, buffer) => {
                         if (err) throw err;
@@ -66,9 +67,8 @@ namespace _3 {
                         }
                     });
                 }
-                next();
             });
         });
     }
-    copy(_path('fs.txt'), _path('fs1.txt'));
+    // copy(_path('fs.txt'), _path('fs1.txt'));
 }

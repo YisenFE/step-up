@@ -23,14 +23,14 @@ namespace _ {
                         done: index > this.length
                     }
                 }
-            }
+            };
         }
     };
     function fn() {
         const arr = [...obj];
         console.log(arr);
     }
-    fn();
+    // fn();
 }
 
 namespace _1 {
@@ -53,7 +53,7 @@ namespace _1 {
         const arr = [...obj];
         console.log(arr);
     }
-    fn();
+    // fn();
 }
 
 namespace _2 {
@@ -73,7 +73,7 @@ namespace _2 {
         console.log(it.next(200));
         console.log(it.next(300));
     }
-    fn();
+    // fn();
 }
 
 namespace _3 {
@@ -96,7 +96,7 @@ namespace _3 {
             });
         });
     }
-    fn();
+    // fn();
 }
 
 namespace _4 {
@@ -104,7 +104,7 @@ namespace _4 {
         const fs = require('mz/fs');
         // const co = require('co');
         function co(it: Generator): Promise<any> {
-            return new Promise((resove, reject) => {
+            return new Promise((resolve, reject) => {
                 next();
                 function next(val?: any) {
                     const { value, done } = it.next(val);
@@ -125,7 +125,7 @@ namespace _4 {
         co(read()).then((data: string) => {
             console.log(data);
         }).catch((err: any) => {
-            console.log(err);
+            console.log('error: ', err);
         });
     }
     fn();

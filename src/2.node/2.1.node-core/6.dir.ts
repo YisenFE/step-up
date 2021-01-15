@@ -14,14 +14,15 @@ namespace _ {
             }
         }
     }
-    mkdirSync('a/b/c/d/e');
+    // mkdirSync('a/b/c/d/e');
 }
 
 /** 异步递归创建文件夹 */
 namespace _1 {
     function mkdir(paths: string) {
         const arr = paths.split('/');
-        function next(index: number) {
+        next();
+        function next(index: number = 0) {
             if (index >= arr.length) return;
             const currPath = path.resolve(__dirname, arr.slice(0, index + 1).join('/'));
             fs.access(currPath, (err) => {
@@ -32,13 +33,12 @@ namespace _1 {
                 }
             })
         }
-        next(0);
     }
     mkdir('a/b/c/d/e/f/g');
     mkdir('a/b1/b1/d1/e1');
 
-    mkdir('a1/b1/c1/d1');
-    mkdir('a1/b2/b2/d2/e3');
+    // mkdir('a1/b1/c1/d1');
+    // mkdir('a1/b2/b2/d2/e3');
 }
 
 /** 同步递归删除 */
@@ -59,8 +59,8 @@ namespace _2 {
             fs.unlinkSync(dir);
         }
     }
-    deepRemoveDirSync(path.resolve(__dirname, 'a1'));
-    fs.rmdirSync(path.resolve(__dirname, 'a1'), {recursive: true});
+    // deepRemoveDirSync(path.resolve(__dirname, 'a1'));
+    // fs.rmdirSync(path.resolve(__dirname, 'a1'), {recursive: true});
 
     // 广度遍历
     function wideRemoveDirSync(dir: string) {
@@ -83,7 +83,7 @@ namespace _2 {
             }
         }
     }
-    wideRemoveDirSync(path.resolve(__dirname, 'a1'));
+    // wideRemoveDirSync(path.resolve(__dirname, 'a1'));
 }
 
 /** 异步递归删除 */
@@ -105,7 +105,7 @@ namespace _2 {
         });
     }
 
-    rmdir(path.resolve(__dirname, 'a1'), () => { console.log('remove success'); });
+    // rmdir(path.resolve(__dirname, 'a1'), () => { console.log('remove success'); });
 }
 
 /** 异步 并发 删除 */
@@ -125,18 +125,15 @@ namespace _3 {
 
                     // 并发删除
                     let index = 0;
-                    function done() {
-                        if (++index === subDirs.length) {
-                            fs.rmdir(dir, callback);
-                        }
-                    }
+                    function done() { ++index === subDirs.length && fs.rmdir(dir, callback); }
                 });
             } else {
                 fs.unlink(dir, callback);
             }
         });
     }
-    rmdirParalle('a', () => { console.log('rmove success'); });
+    // rmdirParalle(path.resolve(__dirname, 'a'), () => { console.log('rmove success'); });
+    // rmdirParalle(path.resolve(__dirname, 'a'), () => { console.log('rmove success'); });
 }
 
 

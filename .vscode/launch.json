@@ -16,7 +16,7 @@
             "name": "Run file",
             "runtimeExecutable": "ts-node",
             "runtimeArgs": [
-                "${file}"
+                "${relativeFile}"
             ]
         }
     ]
