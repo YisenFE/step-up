@@ -4,7 +4,7 @@
 
 export namespace _ {
     export type FulfillmentHandler<T, TResult> = ((value: T) => TResult | PromiseLike<TResult>) | undefined | null;
-    export type RejectionHandler<TResult> = ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null;
+    export type RejectionHandler<TResult> = ((reason?: any) => TResult | PromiseLike<TResult>) | undefined | null;
     export type FinallyHandler = (() => void) | undefined | null;
 
     export interface PromiseLike<T> {
@@ -65,7 +65,7 @@ const enum State {
     Rejected = 'rejected'
 }
 export class Promise<T> implements _.Promise<T> {
-    private _state = State.Pending;
+    private _state: State = State.Pending;
     private _value: T | undefined = undefined;
     private _reason: any = undefined;
 
@@ -86,7 +86,7 @@ export class Promise<T> implements _.Promise<T> {
                 this._state = State.Rejected;
                 this._onRejectedCallbacks.forEach(cb => cb());
 
-                if (!(r && r.then) && !this._onRejectedCallbacks.length) {
+                if (!this._onRejectedCallbacks.length) {
                     console.error(new Error(' (in promise) ' + this._reason));
                 }
             }
@@ -96,11 +96,9 @@ export class Promise<T> implements _.Promise<T> {
             this._resolvePromise(this, v, _f, _r);
         };
         const reject = _r;
-
         try {
             executor(resolve, reject);
         } catch (error) {
-            console.log(error);
             reject(error);
         }
     }
@@ -111,55 +109,39 @@ export class Promise<T> implements _.Promise<T> {
     ): _.Promise<TResult1 | TResult2> {
         const P: _.PromiseConstructor = (Object.getPrototypeOf(this).constructor);
 
-        const promise2 = new P<TResult1 | TResult2>((resolve, reject) => {
-            const _onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : (v: T) => v;
-            const _onRejected = typeof onRejected === 'function' ? onRejected : (err: any) => { throw err };
-
-            if (this._state === State.FulFilled) {
+        const promise = new P<TResult1 | TResult2>((resolve, reject) => {
+            const resHandler = () => {
+                const _onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : (v: T) => v;
                 setTimeout(() => {
                     try {
-                        let x = _onFulfilled(this._value as T);
-                        this._resolvePromise(promise2, x, resolve, reject);
+                        let x = _onFulfilled(this._value as T) as TResult1 | _.PromiseLike<TResult1>;
+                        this._resolvePromise<TResult1 | TResult2>(promise, x, resolve, reject);
                     } catch (error) {
                         reject(error);
                     }
                 });
-            }
-            if (this._state === State.Rejected) {
+            };
+            const rejHandler = () => {
+                const _onRejected = typeof onRejected === 'function' ? onRejected : (err: any) => { throw err };
                 setTimeout(() => {
                     try {
                         let x = _onRejected(this._reason);
-                        this._resolvePromise(promise2, x, resolve, reject);
+                        this._resolvePromise(promise, x, resolve, reject);
                     } catch (error) {
                         reject(error);
                     }
                 });
-            }
+            };
+
+            if (this._state === State.FulFilled) resHandler();
+            if (this._state === State.Rejected) rejHandler();
             if (this._state === State.Pending) {
-                this._onResolvedCallbacks.push(() => {
-                    setTimeout(() => {
-                        try {
-                            let x = _onFulfilled(this._value as T);
-                            this._resolvePromise(promise2, x, resolve, reject);
-                        } catch (error) {
-                            reject(error);
-                        }
-                    });
-                });
-                this._onRejectedCallbacks.push(() => {
-                    setTimeout(() => {
-                        try {
-                            let x = _onRejected(this._reason);
-                            this._resolvePromise(promise2, x, resolve, reject);
-                        } catch (error) {
-                            reject(error);
-                        }
-                    })
-                });
+                this._onResolvedCallbacks.push(resHandler);
+                this._onRejectedCallbacks.push(rejHandler);
             }
         });
 
-        return promise2;
+        return promise;
     }
 
     public catch<TResult = never>(onRejected: _.RejectionHandler<TResult>) {
@@ -181,7 +163,7 @@ export class Promise<T> implements _.Promise<T> {
         });
     }
 
-    static reject<T>(r: any): _.Promise<T> {
+    static reject<T>(r?: any): _.Promise<T> {
         return new this((resolve, reject) => {
             reject(r);
         });
@@ -198,14 +180,14 @@ export class Promise<T> implements _.Promise<T> {
                 fllow(promises[i], i);
             }
 
-            function fllow(t: T | _.PromiseLike<T>, index: number): void {
+            function fllow<T>(t: T | _.PromiseLike<T>, index: number): void {
                 P.resolve(t).then(v => {
                     results[index] = v;
                     remaining--;
                     if (remaining === 0) {
                         resolve(results);
                     }
-                }, r => {
+                }, (r?: any) => {
                     reject(r);
                 });
             }
@@ -234,40 +216,38 @@ export class Promise<T> implements _.Promise<T> {
     }
 
     private _resolvePromise<T>(
-        promise2: _.Promise<T>,
-        x: any,
+        promise: _.Promise<T>,
+        x: T | _.PromiseLike<T>,
         resolve: (value: T) => void,
         reject: (reason?: any) => void
     ): void {
-        if (promise2 === x) {
+        if (promise === x) {
             return reject(new TypeError('循环引用'));
         }
-
         if (x !== null && (typeof x === 'object' || typeof x === 'function')) {
-            let called: boolean = false;
+            let called = false;
             try {
-                const then = x.then;
+                const then = (x as _.PromiseLike<T>).then;
                 if (typeof then === 'function') {
                     // x.then() // 有可能第一次取值报错，第二次取值不报错
                     then.call(x, (v: T) => {
                         if (called) return;
                         called = true;
                         // resolve(v);
-                        this._resolvePromise(promise2, v, resolve, reject);
+                        this._resolvePromise(promise, v, resolve, reject);
                     }, (r?: any) => {
                         if (called) return;
                         called = true;
                         reject(r);
                     });
                 } else {
-                    resolve(x);
+                    resolve(x as T);
                 }
             } catch (error) {
                 if (called) return;
                 called = true;
                 reject(error);
             }
-
         } else {
             resolve(x);
         }

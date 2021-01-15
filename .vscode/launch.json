@@ -5,15 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "command": "promises-aplus-tests ${relativeFile}",
-            "name": "Run promises-aplus-tests",
+            "command": "node plugins/promises-tests-master/lib/cli.js ${relativeFile}",
+            "name": "promise test",
             "request": "launch",
             "type": "node-terminal"
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "Run file",
+            "name": "run file",
             "runtimeExecutable": "ts-node",
             "runtimeArgs": [
                 "${relativeFile}"
