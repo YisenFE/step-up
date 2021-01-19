@@ -92,10 +92,17 @@ export class Promise<T> implements _.Promise<T> {
             }
         };
 
+        let called = false;
         const resolve = (v: T | _.PromiseLike<T>) => {
+            if (called) return;
+            called = true;
             this._resolvePromise(this, v, _f, _r);
         };
-        const reject = _r;
+        const reject = (r?: any) => {
+            if (called) return;
+            called = true;
+            _r(r);
+        };
         try {
             executor(resolve, reject);
         } catch (error) {
@@ -107,7 +114,7 @@ export class Promise<T> implements _.Promise<T> {
         onFulfilled?: _.FulfillmentHandler<T, TResult1>,
         onRejected?: _.RejectionHandler<TResult2>
     ): _.Promise<TResult1 | TResult2> {
-        const P: _.PromiseConstructor = (Object.getPrototypeOf(this).constructor);
+        const P: _.PromiseConstructor = Object.getPrototypeOf(this).constructor;
 
         const promise = new P<TResult1 | TResult2>((resolve, reject) => {
             const resHandler = () => {
@@ -230,7 +237,7 @@ export class Promise<T> implements _.Promise<T> {
                 const then = (x as _.PromiseLike<T>).then;
                 if (typeof then === 'function') {
                     // x.then() // 有可能第一次取值报错，第二次取值不报错
-                    then.call(x, (v: T) => {
+                    then.call(x, (v: T | _.PromiseLike<T>) => {
                         if (called) return;
                         called = true;
                         // resolve(v);
