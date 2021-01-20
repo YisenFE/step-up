@@ -1,5 +1,17 @@
 /**
- * @file promise实现
+ * @file promise
+ *
+ * promise是一个带有then方法的对象或函数
+ * value是任何合法的JavaScript值(包括undefined、promiseLike或promise)。
+ *
+ * pending态时：
+ *      可以过渡到完成或拒绝状态。
+ * fulfilled态时：
+ *      不能过渡到任何其他状态。
+ *      必须有一个不能改变的值。
+ * rejected态时：
+ *      不能过渡到任何其他状态。
+ *      必须有一个理由，这个理由不能改变。
  */
 
 export namespace _ {
@@ -121,7 +133,7 @@ export class Promise<T> implements _.Promise<T> {
                 const _onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : (v: T) => v;
                 setTimeout(() => {
                     try {
-                        let x = _onFulfilled(this._value as T) as TResult1 | _.PromiseLike<TResult1>;
+                        const x = _onFulfilled(this._value as T) as TResult1 | _.PromiseLike<TResult1>;
                         this._resolvePromise<TResult1 | TResult2>(promise, x, resolve, reject);
                     } catch (error) {
                         reject(error);
@@ -129,10 +141,10 @@ export class Promise<T> implements _.Promise<T> {
                 });
             };
             const rejHandler = () => {
-                const _onRejected = typeof onRejected === 'function' ? onRejected : (err: any) => { throw err };
+                const _onRejected = typeof onRejected === 'function' ? onRejected : (r?: any) => { throw r };
                 setTimeout(() => {
                     try {
-                        let x = _onRejected(this._reason);
+                        const x = _onRejected(this._reason);
                         this._resolvePromise(promise, x, resolve, reject);
                     } catch (error) {
                         reject(error);
@@ -229,18 +241,16 @@ export class Promise<T> implements _.Promise<T> {
         reject: (reason?: any) => void
     ): void {
         if (promise === x) {
-            return reject(new TypeError('循环引用'));
+            return reject(new TypeError('Chaining cycle detected for promise #<Promise>'));
         }
         if (x !== null && (typeof x === 'object' || typeof x === 'function')) {
             let called = false;
             try {
                 const then = (x as _.PromiseLike<T>).then;
                 if (typeof then === 'function') {
-                    // x.then() // 有可能第一次取值报错，第二次取值不报错
                     then.call(x, (v: T | _.PromiseLike<T>) => {
                         if (called) return;
                         called = true;
-                        // resolve(v);
                         this._resolvePromise(promise, v, resolve, reject);
                     }, (r?: any) => {
                         if (called) return;
@@ -260,13 +270,3 @@ export class Promise<T> implements _.Promise<T> {
         }
     }
 }
-
-
-(Promise as any).deferred = function() {
-    let dfd: any = {};
-    dfd.promise = new Promise((resolve, reject) => {
-        dfd.resolve = resolve;
-        dfd.reject = reject;
-    });
-    return dfd;
-};
