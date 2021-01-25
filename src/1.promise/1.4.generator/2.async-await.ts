@@ -17,4 +17,3 @@ export var __awaiter: (
 export const fn1: () => void = () => __awaiter(void 0, (void 0 as any), (void 0 as any), (function* () {
     yield 1;
 } as any));
-
