@@ -2,10 +2,13 @@ import fs from 'fs';
 import {EventEmitter} from 'events';
 import { _path } from '../../utils/path';
 
-namespace _ {
+const file1 = 'name-stream.txt';
+const file2 = 'name-stream1.txt';
+
+export namespace _ {
     // 文件操作读和些 流：可读流 可写流（fs.read fs.write）异步读写
     // 我们希望不会占用大量内存
-    const rs = fs.createReadStream(_path('name-stream.txt'), {
+    const rs = fs.createReadStream(_path(file1), {
         flags: 'r', // 打开文件 r w r+ w+ a...
         highWaterMark: 2, // 每次读取一个 字节数 默认每次读取64K文件内容
         mode: 0o666, // 可读可写
@@ -82,7 +85,7 @@ namespace _ {
     }
 }
 
-namespace __ {
+export namespace __ {
     type ReadStreamOptions = string | {
         flags?: string;
         encoding?: BufferEncoding;
@@ -150,32 +153,33 @@ namespace __ {
                 this.emit('open', this.fd);
             });
         }
-        public read(): any {
+        public read() {
             // 默认第一次 read方法 肯定拿不到 fd 的 但是等一会而过触发了 open 事件，肯定可以获取到 this.fd
             if (typeof this.fd !== 'number') { // 抱枕文件描述符存在的时候 才调用 read 方法来读取
-                return this.once('open', () => this.read());
+                this.once('open', () => this.read());
+            } else {
+                let toRead = this.end
+                    ? Math.min((this.end - this.pos + 1), this.highWaterMark)
+                    : this.highWaterMark;
+                const buffer = Buffer.alloc(toRead);
+                fs.read(this.fd, buffer, 0, buffer.length, this.pos, (err, bytesRead) => {
+                    if (!bytesRead) {
+                        this.emit('end');
+                        if (this.emitClose) this.emit('close');
+                        return;
+                    }
+                    this.pos += bytesRead;
+                    this.emit('data', this.encoding ? buffer.toString(this.encoding) : buffer);
+                    if (this.flowing) {
+                        this.read();
+                    }
+                });
             }
-            let toRead = this.end
-                ? Math.min((this.end - this.pos + 1), this.highWaterMark)
-                : this.highWaterMark;
-            const buffer = Buffer.alloc(toRead);
-            fs.read(this.fd, buffer, 0, buffer.length, this.pos, (err, bytesRead) => {
-                if (!bytesRead) {
-                    this.emit('end');
-                    if (this.emitClose) this.emit('close');
-                    return;
-                }
-                this.pos += bytesRead;
-                this.emit('data', this.encoding ? buffer.toString(this.encoding) : buffer);
-                if (this.flowing) {
-                    this.read();
-                }
-            });
         }
     }
     export function fn() {
 
-        const rs = new ReadStream(_path('name-stream1.txt'), {
+        const rs = new ReadStream(_path(file2), {
             flags: 'r',
             highWaterMark: 3,
             mode: 0o666,
