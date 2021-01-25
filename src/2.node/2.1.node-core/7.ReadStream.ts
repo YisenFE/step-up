@@ -131,7 +131,6 @@ namespace __ {
 
             this.pos = this.start;
 
-            // if (this.fd !== n)
             this.open();
 
             this.on('newListener', (type) => {
