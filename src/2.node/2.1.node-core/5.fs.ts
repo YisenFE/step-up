@@ -38,9 +38,9 @@ namespace _2 {
         const buffer = Buffer.from('义森');
         fs.open(_path('fs.txt'), 'r+', (err, fd) => {
             if (err) throw err;
-            fs.write(fd, buffer, 0, buffer.length, 10, (err, written, buffer) => {
+            fs.write(fd, buffer, 0, buffer.length, 10, (err, bytesRead, buffer) => {
                 if (err) throw err;
-                console.log(written, buffer, buffer.toString());
+                console.log(bytesRead, buffer, buffer.toString());
             });
         });
     }

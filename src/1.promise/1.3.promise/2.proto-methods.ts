@@ -78,7 +78,6 @@ module promise32_1 {
             console.log(value);
         });
 
-
         Promise.resolve(p6).then(a => {
             console.log(a)
         });

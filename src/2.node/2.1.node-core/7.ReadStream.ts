@@ -1,3 +1,5 @@
+// http://nodejs.cn/api/fs.html#fs_fs_createreadstream_path_options
+
 import fs from 'fs';
 import {EventEmitter} from 'events';
 import { _path } from '../../utils/path';
@@ -66,8 +68,6 @@ export namespace _ {
             console.log(chunk);
             arr.push(chunk);
             rs.pause(); // 停止data事件的触发，并切换出流动模式。 任何可用的数据都会保留在内部缓存中。
-
-
         });
 
         setInterval(() => { // 读一秒存一秒
@@ -103,7 +103,7 @@ export namespace __ {
     class ReadStream extends EventEmitter {
         public path: fs.PathLike;
 
-        public flags: string;
+        public flags: string; // http://nodejs.cn/api/fs.html#fs_file_system_flags
         public encoding?: BufferEncoding;
         public fd?: number;
         public mode: number;
@@ -176,9 +176,20 @@ export namespace __ {
                 });
             }
         }
+        public pause() {
+            this.flowing = false;
+        }
+        public resume() {
+            this.flowing = true;
+            this.read();
+        }
+        pipe(ws: fs.WriteStream) {
+            this.on('data', chunk => !ws.write(chunk) && this.pause());
+
+            ws.on('drain', () => this.resume());
+        }
     }
     export function fn() {
-
         const rs = new ReadStream(_path(file2), {
             flags: 'r',
             highWaterMark: 3,

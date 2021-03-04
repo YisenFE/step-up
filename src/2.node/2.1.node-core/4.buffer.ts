@@ -18,7 +18,6 @@ namespace _ {
 
     console.log(arr);
 
-
     const buffer2 = Buffer.from('我不要我觉得我只要你觉得'); // 3 * 8
     console.log(buffer2.indexOf('觉得'))
     console.log(buffer2[12].toString(16));

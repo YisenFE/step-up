@@ -126,7 +126,6 @@ module promise31_3 {
             console.log(data);
         });
 
-
         function read(url: string) {
             return new Promise<string>((resolve, reject) => {
                 fs.readFile(url, 'utf8', (err, data) => {

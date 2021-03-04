@@ -12,7 +12,7 @@ module es63_1 {
         }
 
         let arr = [1, 2, 3];
-        let proxy = new Proxy<any>(arr, {
+        let proxy = new Proxy<any[]>(arr, {
             set(
                 target: object,
                 key: string | symbol,

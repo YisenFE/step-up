@@ -1,7 +1,6 @@
 import fs from 'fs';
 import { _path } from '../../utils/path';
 import { Promise } from './promise';
-
 namespace _ {
     export function promisify(fn: Function) {
         return (...args: any[]) => {

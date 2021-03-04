@@ -19,7 +19,6 @@ namespace _ {
     console.log(__filename);
     console.log(path.join('a', 'b'));
 
-
     console.log(path.join(__dirname, 'sum.js'));
     console.log(path.resolve(__dirname, 'sum.js'));
 

@@ -1,3 +1,4 @@
+// http://nodejs.cn/api/fs.html#fs_fs_createwritestream_path_options
 import fs from 'fs';
 import { EventEmitter } from 'events';
 import { _path } from '../../utils/path';
@@ -31,7 +32,7 @@ namespace _ {
 
 namespace __ {
     type WriteStreamOptions = string | {
-        flags?: string;
+        flags?: string; // http://nodejs.cn/api/fs.html#fs_file_system_flags
         encoding?: BufferEncoding;
         fd?: number;
         mode?: number;
@@ -82,7 +83,6 @@ namespace __ {
             this.len = 0;
             this.needDrain = false;
             this.pos = this.start;
-
         }
         open() {
             fs.open(this.path, this.flags, (err, fd) => {
@@ -120,9 +120,9 @@ namespace __ {
             if (typeof this.fd !== 'number') {
                 this.once('open', () => this._write(chunk, encoding, callback));
             } else {
-                fs.write(this.fd, chunk, 0, chunk.length, this.pos, (err, written) => {
-                    this.pos += written;
-                    this.len -= written;
+                fs.write(this.fd, chunk, 0, chunk.length, this.pos, (err, bytesRead) => {
+                    this.pos += bytesRead;
+                    this.len -= bytesRead;
                     callback();
                 });
             }
@@ -166,5 +166,5 @@ namespace __ {
         });
     }
 }
-// _.demo1();
+_.demo1();
 // __.demo2();
