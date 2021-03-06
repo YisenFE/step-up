@@ -18,6 +18,20 @@
             "runtimeArgs": [
                 "${relativeFile}"
             ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "watch run file",
+            "runtimeExecutable": "npx",
+            "runtimeArgs": [
+                "nodemon",
+                "--watch",
+                "src/**/*.ts",
+                "--exec",
+                "ts-node",
+                "${relativeFile}"
+            ]
         }
     ]
 }
