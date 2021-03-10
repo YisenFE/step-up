@@ -8,7 +8,7 @@ import {Server, ServerOptions} from './server';
 const defaultCfg: ServerOptions = {
     port: '3000',
     host: '127.0.0.1',
-    dir: process.cwd() + '/dist/src'
+    dir: process.cwd()
 };
 
 const program = new Command();

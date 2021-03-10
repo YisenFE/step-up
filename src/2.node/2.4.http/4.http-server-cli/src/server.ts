@@ -1,7 +1,7 @@
 import http from 'http';
 import path from 'path';
 
-// import mime from 'mime';
+import mime from 'mime';
 import ejs from 'ejs';
 import fs from 'mz/fs';
 import chalk from 'chalk';
@@ -42,7 +42,7 @@ export class Server {
                 res.setHeader('Content-Type', 'text/html;charset=utf-8');
                 res.end(renderTpl);
             } else {
-                this.sendFile(req, res, stats, absPath);
+                this.sendFile(req, res, absPath);
             }
         } catch (error) {
             console.log(error);
@@ -53,12 +53,10 @@ export class Server {
         res.statusCode = 404;
         res.end('Not Found');
     }
-    sendFile(
-        req: http.IncomingMessage,
-        res: http.ServerResponse,
-        stats: fs.Stats,
-        absPath: string
-    ) {
+    sendFile(req: http.IncomingMessage,res: http.ServerResponse, absPath: string) {
+        res.setHeader('Cache-Control', 'max-age=1000');
+        res.setHeader('Expires', new Date(Date.now() + 1000 * 1000).toGMTString());
+        console.log(req.url);
         res.setHeader('Content-Type', 'text/html;charset=utf-8');
         fs.createReadStream(absPath).pipe(res);
     }

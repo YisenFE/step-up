@@ -6,8 +6,8 @@
     "http-server": "./dist/src/index.js"
   },
   "scripts": {
-    "link": "ts-node ./build/index.ts",
-    "unlink": "npm uninstall -g http-server",
+    "link": "ts-node ./build/link.ts",
+    "unlink": "ts-node ./build/unlink.ts",
     "dev": "npm run link && tsc -w",
     "server": "http-server"
   },
