@@ -1,3 +1,3 @@
 interface Date {
-    toGMTString: () => number
+    toGMTString: () => string
 }
