@@ -6,13 +6,10 @@ fs.access(path.join(__dirname, '../node_modules'), fs.constants.F_OK, (err) => {
         if (err) {
             spawnSync('npm', ['i']);
         }
-        const distPath = path.resolve(__dirname, '../dist');
-        fs.mkdir(resolvePath('../dist'), () => {
-            spawnSync('cp', ['-R', resolvePath('../public'), resolvePath('../dist')]);
-            spawnSync('node', [resolvePath('../node_modules/.bin/tsc')]);
-            spawnSync('npm', ['link']);
-            console.log(`DONE: npm link`);
-        });
+
+        spawnSync('node', [resolvePath('../node_modules/.bin/tsc')]);
+        spawnSync('cp', ['-R', resolvePath('../public'), resolvePath('../dist')]);
+        console.log(`DONE: dist`);
     } catch (error) {
         throw Error(error);
     }

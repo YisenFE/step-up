@@ -1,5 +1,6 @@
 import http from 'http';
 import path from 'path';
+import crypto from 'crypto';
 
 import mime from 'mime';
 import ejs from 'ejs';
@@ -12,10 +13,17 @@ import template from './template';
 
 const log = console.log;
 
+export enum CacheMode {
+    Force = 'force',
+    SimpleWeak = 'simpleWeak',
+    Weak = 'weak'
+};
+
 export interface ServerOptions {
     port: string;
     host: string;
     dir: string;
+    cacheMode: CacheMode;
 }
 
 /**
@@ -33,13 +41,15 @@ export class Server {
         const server = http.createServer(this.requestListener.bind(this));
         server.listen(this.options, () => {
             const { dir, host, port } = this.options;
-            log(chalk.yellow(
-                `Starting up http-server,\n`
-                + `serving:\n`
+            log(
+                `- Starting up http-server,\n`
+                + `- dirPath:\n`
                 + `    ${dir}\n`
-                + `Available on:\n`
+                + `- mode:\n`
+                + `    ${this.options.cacheMode}\n`
+                + `- Available on:\n`
                 + chalk.green(`   http://${host}:${port}`)
-            ));
+            );
         });
     }
     /**
@@ -95,8 +105,17 @@ export class Server {
         stats: fs.Stats,
         absPath: string
     ) {
-        // this.forcingCache(req, res, absPath);
-        this.weakCache(req, res, stats, absPath);
+        switch (this.options.cacheMode) {
+            case CacheMode.Force:
+                this.forcingCache(req, res, absPath);
+                break;
+            case CacheMode.SimpleWeak:
+                this.simpleWeakCache(req, res, stats, absPath);
+                break;
+            case CacheMode.Weak:
+                this.weakCache(req, res, absPath);
+                break;
+        }
     }
     /**
      * 强缓存
@@ -118,20 +137,19 @@ export class Server {
         fs.createReadStream(absPath).pipe(res);
     }
     /**
-     * 协商缓存
+     * 简化版协商缓存
      * @param req http://nodejs.cn/api/http.html#http_class_http_incomingmessage
      * @param res http://nodejs.cn/api/http.html#http_class_http_serverresponse
      * @param stats http://nodejs.cn/api/fs.html#fs_class_fs_stats
      * @param absPath 绝对路径
      * @returns undefined
      */
-    weakCache(
+    simpleWeakCache(
         req: http.IncomingMessage,
         res: http.ServerResponse,
         stats: fs.Stats,
         absPath: string
     ) {
-        // 协商缓存
         res.setHeader('Last-Modified', stats.ctime.toGMTString());
         const clientDate = req.headers['if-modified-since'];
         const serverDate = stats.ctime.toGMTString();
@@ -146,5 +164,40 @@ export class Server {
         log(req.url);
         res.setHeader('Content-Type', 'text/html;charset=utf-8');
         fs.createReadStream(absPath).pipe(res);
+    }
+    /**
+     * 协商缓存
+     * @param req http://nodejs.cn/api/http.html#http_class_http_incomingmessage
+     * @param res http://nodejs.cn/api/http.html#http_class_http_serverresponse
+     * @param absPath 绝对路径
+     * @returns undefined
+     */
+    weakCache(
+        req: http.IncomingMessage,
+        res: http.ServerResponse,
+        absPath: string
+    ) {
+        res.setHeader('Cache-Control', 'no-cache');
+
+        res.setHeader('Content-Type', 'text/html;charset=utf-8');
+
+        const rs = fs.createReadStream(absPath);
+        const md5 = crypto.createHash('md5');
+        const arr: Buffer[] = [];
+        rs.on('data', (chunk: Buffer) => {
+            md5.update(chunk);
+            arr.push(chunk);
+        });
+        rs.on('end', () => {
+            const serverData = md5.digest('base64');
+            const clientDate = req.headers['if-none-match']
+            if (serverData === clientDate) {
+                res.statusCode = 304;
+                res.end();
+                return;
+            }
+            res.setHeader('ETag', serverData);
+            res.end(Buffer.concat(arr));
+        });
     }
 }
