@@ -7,9 +7,15 @@
   },
   "scripts": {
     "bootstrap": "ts-node ./build/bootstrap.ts",
-    "watch": "ts-node ./build/watcher.ts",
-    "server": "ts-node ./src/index.ts",
-    "dev": "npm run bootstrap && npm run watch & nodemon --watch dist --exec npm run server",
+    "watch": "npm run bootstrap && ts-node ./build/watcher.ts",
+    "server:w": "ts-node ./src/index.ts -c weak",
+    "server:f": "ts-node ./src/index.ts -c force",
+    "server:sw": "ts-node ./src/index.ts -c simpleWeak",
+    "server:hw": "ts-node ./src/index.ts -c hybridWeak",
+    "dev:w": "npm run watch & nodemon --watch dist --exec npm run server:w",
+    "dev:f": "npm run watch & nodemon --watch dist --exec npm run server:f",
+    "dev:sw": "npm run watch & nodemon --watch dist --exec npm run server:sw",
+    "dev:hw": "npm run watch & nodemon --watch dist --exec npm run server:hw",
     "link": "npm link",
     "unlink": "npm uninstall -g http-server"
   },

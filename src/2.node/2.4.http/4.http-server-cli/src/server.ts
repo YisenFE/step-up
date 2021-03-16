@@ -12,11 +12,13 @@ import template from './template';
 // const template = fs.readFileSync(path.resolve(__dirname, './template.ts')).toString();
 
 const log = console.log;
+const MaxAge = 'max-age=10';
 
 export enum CacheMode {
     Force = 'force',
     SimpleWeak = 'simpleWeak',
-    Weak = 'weak'
+    Weak = 'weak',
+    HybridWeak = 'hybridWeak'
 };
 
 export interface ServerOptions {
@@ -115,6 +117,8 @@ export class Server {
             case CacheMode.Weak:
                 this.weakCache(req, res, absPath);
                 break;
+            case CacheMode.HybridWeak:
+                this.hybridWeakCache(req, res, stats, absPath);
         }
     }
     /**
@@ -129,8 +133,8 @@ export class Server {
         absPath: string
     ) {
         // 强缓存
-        res.setHeader('Cache-Control', 'max-age=1000');
-        res.setHeader('Expires', new Date(Date.now() + 1000 * 1000).toGMTString());
+        res.setHeader('Cache-Control', MaxAge);
+        // res.setHeader('Expires', new Date(Date.now() + 10 * 1000).toGMTString());
 
         log(req.url);
         res.setHeader('Content-Type', 'text/html;charset=utf-8');
@@ -177,7 +181,7 @@ export class Server {
         res: http.ServerResponse,
         absPath: string
     ) {
-        res.setHeader('Cache-Control', 'no-cache');
+        // res.setHeader('Cache-Control', 'no-cache');
 
         res.setHeader('Content-Type', 'text/html;charset=utf-8');
 
@@ -199,5 +203,49 @@ export class Server {
             res.setHeader('ETag', serverData);
             res.end(Buffer.concat(arr));
         });
+    }
+    /**
+     * 混合版协商缓存
+     * @param req http://nodejs.cn/api/http.html#http_class_http_incomingmessage
+     * @param res http://nodejs.cn/api/http.html#http_class_http_serverresponse
+     * @param stats http://nodejs.cn/api/fs.html#fs_class_fs_stats
+     * @param absPath 绝对路径
+     * @returns undefined
+     */
+    hybridWeakCache(
+        req: http.IncomingMessage,
+        res: http.ServerResponse,
+        stats: fs.Stats,
+        absPath: string
+    ) {
+        if (isCache()) {
+            res.statusCode = 304;
+            return res.end();
+        }
+
+        res.setHeader('Content-Type', 'text/html;charset=utf-8');
+        fs.createReadStream(absPath).pipe(res);
+
+        function isCache() {
+            const LastModified = stats.ctime.toGMTString();
+            const ModifiedSince = req.headers['if-modified-since'];
+            const NoneMatch = req.headers['if-none-match'];
+            const ETag = stats.size + '';
+
+            res.setHeader('Cache-Control', MaxAge);
+            res.setHeader('Last-Modified', LastModified);
+            res.setHeader('ETag', ETag);
+
+            console.log(LastModified, ModifiedSince, LastModified === ModifiedSince);
+            console.log(NoneMatch, ETag, NoneMatch === ETag);
+
+            if (LastModified !== ModifiedSince) {
+                return false;
+            }
+            if (NoneMatch !== ETag) {
+                return false;
+            }
+            return true;
+        }
     }
 }
