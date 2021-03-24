@@ -1,0 +1,18 @@
+{
+  "name": "5.http-header",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "bootstrap": "npm install",
+    "dev:1": "ts-node ./node_modules/.bin/nodemon ./src/5.1.http-language.ts",
+    "dev:2": "ts-node ./node_modules/.bin/nodemon ./src/5.2.http-range.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

@@ -59,11 +59,11 @@ namespace _1 {
 namespace _2 {
     function fn() {
         function* read() {
-            let a = yield 1;
+            let a: number = yield 1;
             console.log(a, 'a');
-            let b = yield 2;
+            let b: number = yield 2;
             console.log(b, 'b');
-            let c = yield 3;
+            let c: number = yield 3;
             console.log(c, 'c');
         }
         let it = read();
@@ -80,8 +80,8 @@ namespace _3 {
     function fn() {
         const fs = require('mz/fs');
         function * read() {
-            const r = yield fs.readFile(_path('name.txt'), 'utf8');
-            const age = yield fs.readFile(_path(r), 'utf8');
+            const r: string = yield fs.readFile(_path('name.txt'), 'utf8');
+            const age: string = yield fs.readFile(_path(r), 'utf8');
             yield 1 + age;
         }
         const it = read();
@@ -117,9 +117,9 @@ namespace _4 {
         }
 
         function * read() {
-            const r = yield fs.readFile(_path('name.txt'), 'utf8');
-            const age = yield fs.readFile(_path(r), 'utf8');
-            const result = yield [1 + age];
+            const r: string = yield fs.readFile(_path('name.txt'), 'utf8');
+            const age: string = yield fs.readFile(_path(r), 'utf8');
+            const result: string[] = yield [1 + age];
             return result
         }
         co(read()).then((data: string) => {
@@ -128,5 +128,5 @@ namespace _4 {
             console.log('error: ', err);
         });
     }
-    fn();
+    // fn();
 }
