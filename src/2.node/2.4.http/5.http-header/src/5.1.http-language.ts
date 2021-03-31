@@ -14,22 +14,24 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
     res.end(content);
 });
 
-server.listen(3000);
+server.listen(3000, () => {
+    console.log('http://localhost:3000');
+});
 
 function responseContent(language: AcceptLanguage) {
     if (language) {
         let lanCfg: LanguageWeightConfig[] = language.split(',')
             .map(lan => {
-                const [ l, q = 'q=1' ] = lan.split(';');
+                const [l, q = 'q=1'] = lan.split(';');
                 return { lan: l, q: Number(q.split('=')[1]) };
             })
             .sort((a: LanguageWeightConfig, b: LanguageWeightConfig) => b.q - a.q);
-            for (let i = 0; i < lanCfg.length; i++) {
-                const curr = LANGUAGES[lanCfg[i].lan];
-                if (curr) {
-                    return curr;
-                }
+        for (let i = 0; i < lanCfg.length; i++) {
+            const curr = LANGUAGES[lanCfg[i].lan];
+            if (curr) {
+                return curr;
             }
+        }
     }
     return LANGUAGES[DEFAULT_LANGUAGE];
 }

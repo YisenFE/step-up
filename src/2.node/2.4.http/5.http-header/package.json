@@ -6,7 +6,9 @@
   "scripts": {
     "bootstrap": "npm install",
     "dev:1": "ts-node ./node_modules/.bin/nodemon ./src/5.1.http-language.ts",
-    "dev:2": "ts-node ./node_modules/.bin/nodemon ./src/5.2.http-range.ts"
+    "dev:2": "ts-node ./node_modules/.bin/nodemon ./src/5.2.http-range.ts",
+    "dev:3": "ts-node ./node_modules/.bin/nodemon ./src/5.3.http-user-agent.ts",
+    "dev:4": "ts-node ./node_modules/.bin/nodemon ./src/5.4.http-gzip.ts"
   },
   "keywords": [],
   "author": "",

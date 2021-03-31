@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    hello
+    <script>
+        document.cookie = 'a=1';
+        document.cookie = 'b=2';
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('delete', 'http://localhost:3000/user', true);
+        xhr.setRequestHeader('Authorization', 123);
+        xhr.responseType = 'json';
+        xhr.addEventListener('load', () => {
+            console.log(xhr.response);
+        });
+        xhr.withCredentials = true; // 强制跨域携带cookie
+        xhr.send(null);
+    </script>
+</body>
+</html>
