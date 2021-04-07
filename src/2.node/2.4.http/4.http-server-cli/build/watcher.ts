@@ -1,6 +1,6 @@
 import chalk from 'chalk';
-const { spawnSync, spawn, fork } = require("child_process");
 import { Client } from 'fb-watchman';
+import { runBootstrap } from './run';
 const client = new Client();
 
 const { log } = console;
@@ -88,6 +88,6 @@ function make_subscription(client: Client, watch: string, relative_path: string)
             console.log('file changed: ' + file.name, mtime_ms);
         });
 
-        spawnSync('npm', ['run', 'bootstrap']);
+        runBootstrap();
     });
 }

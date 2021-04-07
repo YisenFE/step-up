@@ -18,7 +18,6 @@ http.createServer((req, res) => {
         return res.end();
     }
     if (pathname === '/user') {
-        console.log(2324);
         return res.end(JSON.stringify({ name: 'yisen' }));
     }
 

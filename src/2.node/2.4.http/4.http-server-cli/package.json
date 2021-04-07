@@ -7,7 +7,7 @@
   },
   "scripts": {
     "bootstrap": "ts-node ./build/bootstrap.ts",
-    "watch": "npm run bootstrap && ts-node ./build/watcher.ts",
+    "watch": "ts-node ./build/watcher.ts",
     "server:w": "ts-node ./src/index.ts -c weak",
     "server:f": "ts-node ./src/index.ts -c force",
     "server:sw": "ts-node ./src/index.ts -c simpleWeak",
