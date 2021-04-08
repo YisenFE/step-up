@@ -82,7 +82,6 @@ function make_subscription(client: Client, watch: string, relative_path: string)
     //       exists: true,
     //       type: 'f' } ] }
     client.on('subscription', resp => {
-        // console.log(resp);
         if (resp.subscription !== 'my_subscription') return;
 
         resp.files.forEach((file: FileInfo)=> {

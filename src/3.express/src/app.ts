@@ -38,7 +38,10 @@ namespace _1 {
             res.send(req.params);
         });
         app.listen(port, () => {
-            console.log(`Example app listening at http://localhost:${port} \nDEMO: http://localhost:${port}/users/34/books/8989`);
+            console.log(
+                `Example app listening at http://localhost:${port}`
+                + `\n   demo: http://localhost:${port}/users/34/books/8989`
+            );
         });
     }
     fn2();
