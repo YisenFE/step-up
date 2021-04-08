@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "bootstrap": "ts-node ./build/bootstrap.ts",
-    "dev": "npm run bootstrap && ts-node ./src/app.ts",
+    "dev": "ts-node ./src/app.ts",
     "prod": "tsc",
     "dev:w": "npm run bootstrap && ts-node ./build/watcher.ts"
   },
