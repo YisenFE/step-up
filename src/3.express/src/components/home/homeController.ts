@@ -1,5 +1,5 @@
+// Types
 import { Request, Response } from 'express';
-
 
 class HomeController {
     getFn(req: Request, res: Response) {

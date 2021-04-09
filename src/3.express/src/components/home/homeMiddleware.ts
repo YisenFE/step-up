@@ -1,5 +1,8 @@
+// Types
 import { Express, Request, Response, NextFunction } from 'express';
+
 type Prop = 'constructor' | keyof HomeMiddleware;
+
 /**
  * 中间件
  */

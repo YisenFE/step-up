@@ -1,3 +1,4 @@
+// Types
 import { Request, Response } from 'express';
 
 class BookController {

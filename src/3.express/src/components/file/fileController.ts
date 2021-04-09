@@ -1,3 +1,4 @@
+// Types
 import { Request, Response, NextFunction } from 'express';
 
 class FileController {
