@@ -3,46 +3,29 @@
  * koa 小 + 插件
  * egg 基于 koa
  */
-import  express, {Request, Response} from 'express';
+// Modules
+import express from 'express';
+
+import * as Components from './components';
+import { MiddlewareError } from './middleware/error';
+
 const app = express();
 const port = 3000;
 
-namespace _ {
-    function fn1() {
-        app.get('/', (req, res) => {
-            res.send('get: Hello World!');
-        });
-
-        app.post('/', (req, res) => {
-            res.send('post: Hello World!');
-        });
-
-        app.all('/', (req, res) => {
-            res.send('all: Hello World!');
-        });
-
-        app.all('*', (req, res) => {
-            res.end('all *');
-        });
-
-        app.listen(port, () => {
-            console.log(`Example app listening at http://localhost:${port}`);
-        });
+// 注册路由
+(function launchComponents(subApps: any) {
+    for (const key in subApps) {
+        const subApp = subApps[key];
+        console.log(subApp);
+        subApp(app);
     }
-    // fn1();
-}
+})(Components);
 
-namespace _1 {
-    function fn2() {
-        app.get('/users/:userId/books/:bookId', (req, res) => {
-            res.send(req.params);
-        });
-        app.listen(port, () => {
-            console.log(
-                `Example app listening at http://localhost:${port}`
-                + `\n   demo: http://localhost:${port}/users/34/books/8989`
-            );
-        });
-    }
-    fn2();
-}
+// 注册中间件
+new MiddlewareError(app);
+
+// 监听服务
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`);
+});
+

@@ -54,7 +54,7 @@ client.capabilityCheck({ optional: [], required: ['relative_root'] }, (error, re
 function make_subscription(client: Client, watch: string, relative_path: string) {
     const sub = {
         // Match dirname in the dir_of_interest
-        expression: ['anyof', ['dirname', 'src'], ['dirname', 'public'], ['dirname', 'build']],
+        expression: ['anyof', ['dirname', 'src'], ['dirname', 'public']],
         // Which fields we're interested in
         fields: ['name', 'size', 'mtime_ms', 'exists', 'type'],
         relative_root: relative_path
