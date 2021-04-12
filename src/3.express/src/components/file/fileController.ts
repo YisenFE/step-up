@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 class FileController {
     getFile(req: Request, res: Response, next: NextFunction) {
         const options = {
-            root: process.cwd(),
+            root: `${process.cwd()}/public`,
             /**
              * dotfiles: 如何处理以.开头的文件如.bash
              *  'allow'  - 不做任何特殊处理

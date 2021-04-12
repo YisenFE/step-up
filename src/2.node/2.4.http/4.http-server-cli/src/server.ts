@@ -12,7 +12,7 @@ import template from './template';
 // const template = fs.readFileSync(path.resolve(__dirname, './template.ts')).toString();
 
 const log = console.log;
-const MaxAge = 'max-age=10';
+const MaxAge = 'max-age=10000';
 
 export enum CacheMode {
     Force = 'force',
@@ -218,6 +218,7 @@ export class Server {
         stats: fs.Stats,
         absPath: string
     ) {
+        log(absPath);
         if (isCache()) {
             res.statusCode = 304;
             return res.end();
@@ -235,9 +236,6 @@ export class Server {
             res.setHeader('Cache-Control', MaxAge);
             res.setHeader('Last-Modified', LastModified);
             res.setHeader('ETag', ETag);
-
-            console.log(LastModified, ModifiedSince, LastModified === ModifiedSince);
-            console.log(NoneMatch, ETag, NoneMatch === ETag);
 
             if (LastModified !== ModifiedSince) {
                 return false;

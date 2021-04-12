@@ -12,9 +12,9 @@
     "server:f": "ts-node ./src/index.ts -c force",
     "server:sw": "ts-node ./src/index.ts -c simpleWeak",
     "server:hw": "ts-node ./src/index.ts -c hybridWeak",
-    "dev:w": "npm run watch & nodemon --watch dist --exec npm run server:w",
     "dev:f": "npm run watch & nodemon --watch dist --exec npm run server:f",
     "dev:sw": "npm run watch & nodemon --watch dist --exec npm run server:sw",
+    "dev:w": "npm run watch & nodemon --watch dist --exec npm run server:w",
     "dev:hw": "npm run watch & nodemon --watch dist --exec npm run server:hw",
     "link": "npm link",
     "unlink": "npm uninstall -g http-server"
