@@ -1,0 +1,29 @@
+{
+  "name": "4.koa",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "bootstrap": "ts-node ./scripts/bootstrap.ts",
+    "dev": "ts-node ./src/app.ts",
+    "prod": "tsc",
+    "dev:w": "yarn run bootstrap && ts-node ./scripts/watcher.ts"
+  },
+  "dependencies": {
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-static": "^5.0.0",
+    "mime": "^2.5.2"
+  },
+  "devDependencies": {
+    "@types/fb-watchman": "^2.0.0",
+    "@types/koa": "^2.13.1",
+    "@types/koa-bodyparser": "^5.0.2",
+    "@types/koa-static": "^4.0.1",
+    "@types/mime": "^2.0.3",
+    "@types/node": "^14.14.37",
+    "chalk": "^4.1.0",
+    "fb-watchman": "^2.0.1",
+    "ts-node": "^9.1.1"
+  }
+}

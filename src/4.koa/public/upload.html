@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UPLOAD</title>
+</head>
+<body>
+    文件上传 <input type="file" id="input">
+    <button id="btn">提交</button>
+</body>
+</html>
+
+<script>
+    let size = 10 * 1024; // 10KB大小
+    let fileObj = {
+        file: undefined,
+        num: 0,
+        filename: undefined,
+        totalSize: 0,
+        count: 0
+    };
+    let uploading = false;
+    input.addEventListener('change', (e) => {
+        fileObj.file = e.target.files[0];
+        fileObj.filename = fileObj.file.name;
+        fileObj.totalSize = fileObj.file.size;
+        fileObj.count = Math.ceil(fileObj.totalSize / size);
+    });
+    function upload() {
+        const {totalSize, num, count, filename, file} = fileObj;
+        let min = Math.min(size, totalSize  - num * size);
+        if (min >= 0) {
+            let fd = new FormData();
+            fd.append('chunkNum', num);
+            fd.append('count', count);
+            fd.append('filename', filename);
+            fd.append('chunk', file.slice(num * size, num * size + min));
+            uploadFile(fd);
+            fileObj.num++;
+            upload();
+        }
+    }
+    function uploadFile(fd) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/upload', true);
+        xhr.onload = function() {};
+        xhr.send(fd);
+    }
+    btn.addEventListener('click', () => {
+        if (uploading) {
+            alert('uploading')
+            return;
+        }
+        uploading = true;
+        upload();
+    });
+</script>
