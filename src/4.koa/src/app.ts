@@ -14,8 +14,7 @@ app.use(serve(resolve(__dirname, '../')));
 // app.use(_bodyParser());
 app.use(bodyParser());
 app.use(async (ctx, next) => {
-
-    if (ctx.path === '/upload' && ctx.method === 'POST') {
+    if (ctx.path === '/submit' || ctx.path === '/upload' && ctx.method === 'POST') {
         ctx.body = ctx.request.body;
     } else {
         await next();
