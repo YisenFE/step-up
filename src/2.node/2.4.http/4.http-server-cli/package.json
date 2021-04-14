@@ -4,7 +4,6 @@
   "description": "",
   "bin": "./dist/src/index.js",
   "scripts": {
-    "bootstrap": "ts-node ./build/bootstrap.ts",
     "watch": "ts-node ./build/watcher.ts",
     "server:w": "ts-node ./src/index.ts -c weak",
     "server:f": "ts-node ./src/index.ts -c force",

@@ -4,7 +4,6 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "bootstrap": "ts-node ./scripts/bootstrap.ts",
     "dev": "ts-node ./src/app.ts",
     "prod": "tsc",
     "dev:w": "ts-node ./scripts/watcher.ts"

@@ -35,6 +35,10 @@ ls.on('close', (code) => {
     commandSelect();
 });
 
+ls.stderr.on('data', (error) => {
+    console.log(chalk.red('[ERROR]: ') + error);
+});
+
 
 async function commandSelect() {
     const { workspaceName } = await inquirer.prompt([{

@@ -3,6 +3,7 @@ import chalk from 'chalk';
 
 const { log } = console;
 const childProcesses: {[key: string]: ChildProcessWithoutNullStreams | null} = {};
+
 export function runDev() {
     // NOTE: spawnSync 控制台不会打印子进程日志信息
     const { runDev } = childProcesses;

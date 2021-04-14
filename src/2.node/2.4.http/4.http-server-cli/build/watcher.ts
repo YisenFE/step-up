@@ -1,10 +1,8 @@
 import chalk from 'chalk';
 import { Client } from 'fb-watchman';
-import { runBootstrap } from './run';
-const client = new Client();
 
 const { log } = console;
-
+const client = new Client();
 const dir_of_interest = process.cwd();
 
 client.capabilityCheck({ optional: [], required: ['relative_root'] }, (error, resp) => {
@@ -87,7 +85,5 @@ function make_subscription(client: Client, watch: string, relative_path: string)
             const mtime_ms = +file.mtime_ms;
             console.log('file changed: ' + file.name, mtime_ms);
         });
-
-        runBootstrap();
     });
 }

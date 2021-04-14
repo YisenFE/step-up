@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "bootstrap": "ts-node ./scripts/bootstrap.ts",
     "dev": "ts-node ./src/app.ts",
     "prod": "tsc",
-    "dev:w": "npm run bootstrap && ts-node ./scripts/watcher.ts"
+    "dev:w": "ts-node ./scripts/watcher.ts"
   },
   "keywords": [],
   "author": "",
