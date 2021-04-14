@@ -2,9 +2,7 @@
   "name": "http-server",
   "version": "1.0.0",
   "description": "",
-  "bin": {
-    "http-server": "./dist/src/index.js"
-  },
+  "bin": "./dist/src/index.js",
   "scripts": {
     "bootstrap": "ts-node ./build/bootstrap.ts",
     "watch": "ts-node ./build/watcher.ts",
@@ -29,6 +27,7 @@
     "@types/mz": "^2.7.3",
     "fb-watchman": "^2.0.1",
     "nodemon": "^2.0.7",
+    "ts-node": "^9.1.1",
     "typescript": "^4.2.3"
   },
   "dependencies": {

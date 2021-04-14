@@ -7,7 +7,7 @@
     "bootstrap": "ts-node ./scripts/bootstrap.ts",
     "dev": "ts-node ./src/app.ts",
     "prod": "tsc",
-    "dev:w": "yarn run bootstrap && ts-node ./scripts/watcher.ts"
+    "dev:w": "ts-node ./scripts/watcher.ts"
   },
   "dependencies": {
     "koa": "^2.13.1",

@@ -99,7 +99,7 @@ export class Promise<T> implements _.Promise<T> {
                 this._onRejectedCallbacks.forEach(cb => cb());
 
                 if (!this._onRejectedCallbacks.length) {
-                    console.error(new Error(' (in promise) ' + this._reason));
+                    // console.error(new Error(' (in promise) ' + this._reason));
                 }
             }
         };

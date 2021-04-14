@@ -8,14 +8,13 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "tsc -w",
-    "prepare": "npm run build"
+    "dev:w": "tsc -w",
+    "prepare": "yarn build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "typescript": "^4.1.3"
-  },
-  "dependencies": {}
+  }
 }

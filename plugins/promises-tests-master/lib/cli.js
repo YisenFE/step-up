@@ -25,8 +25,7 @@ function getAdapterFilePath() {
 
 function adapterObjectFromFilePath(filePath) {
     try {
-        const {Promise} = require(filePath);
-        return Promise;
+        return require(filePath);
     } catch (e) {
         var error = new Error("Error `require`ing adapter file " + filePath + "\n\n" + e);
         error.cause = e;
