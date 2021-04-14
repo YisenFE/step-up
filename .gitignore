@@ -127,3 +127,6 @@ Thumbs.db
 /output
 /dist
 /dll
+
+# Package Manager use Yarn
+package-lock.json
