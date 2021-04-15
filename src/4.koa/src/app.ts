@@ -10,7 +10,7 @@ const port = 3000;
 console.log(port, 'port')
 
 // app.use(_serve(resolve(__dirname, '../')));
-app.use(serve(resolve(__dirname, '../')));
+app.use(serve(resolve(__dirname, '../public')));
 // app.use(_bodyParser());
 app.use(bodyParser());
 app.use(async (ctx, next) => {
