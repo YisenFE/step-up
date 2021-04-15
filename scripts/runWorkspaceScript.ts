@@ -43,6 +43,7 @@ ls.stderr.on('data', (error) => {
 async function commandSelect() {
     const { workspaceName } = await inquirer.prompt([{
         type: 'list',
+        loop: false,
         name: 'workspaceName',
         message: 'Select a workspace.',
         choices: uniqueProjects
@@ -51,6 +52,7 @@ async function commandSelect() {
     if (!workspace) return log(`${chalk.yellow('[WARN]')} The selected workspace does not exist`);
     const { script } = await inquirer.prompt([{
         type: 'list',
+        loop: false,
         name: 'script',
         message: 'Select a script to run.',
         choices: Object.keys(workspace.scripts)
