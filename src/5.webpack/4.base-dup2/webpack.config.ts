@@ -109,7 +109,7 @@ const config: Configuration = {
                     },
                     filename: (pathData, assetInfo) => {
                         const isInitial = (pathData.chunk as Chunk).canBeInitial();
-                        return `venders/${isInitial ? 'initial' : 'async'}/[name].[contenthash].js`;
+                        return `vendors/${isInitial ? 'initial' : 'async'}/[name].[contenthash].js`;
                     }
                 },
                 commons: {
