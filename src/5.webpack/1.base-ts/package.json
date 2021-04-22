@@ -2,13 +2,19 @@
   "name": "1.base-ts",
   "private": true,
   "scripts": {
-    "build": "NODE_ENV=none webpack"
+    "build": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" NODE_ENV=none webpack"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "ts-loader": "^8.1.0",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.4",
     "webpack": "^5.33.2",
     "webpack-cli": "^4.6.0"
-  }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <=8"
+  ]
 }

@@ -13,7 +13,8 @@ const config: Configuration = {
         filename: '[name].js'
     },
     // 构建目标 https://webpack.docschina.org/configuration/target/#root
-    target: 'es5',
+    // NOTE: 使用es5 对于多入口但页面应用有bug
+    target: 'browserslist',
     module: {
         rules: [
             { test: /\.tsx?$/, use: 'ts-loader', exclude: /node_modules/ },

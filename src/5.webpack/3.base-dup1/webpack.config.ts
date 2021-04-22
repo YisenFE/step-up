@@ -11,7 +11,13 @@ const assetRoot = './dist';
 
 const config: Configuration = {
     mode: process.env.NODE_ENV as "production" | "development" | "none" | undefined,
-    entry: './src/index.ts',
+    entry: {
+        index: './src/index.ts',
+        another: './src/another-module.ts'
+    },
+    // entry: {
+    //     page: ['./src/index.ts', './src/another-module.ts']
+    // },
     output: {
         path: path.resolve(__dirname, assetRoot),
         filename: devMode
@@ -82,7 +88,11 @@ const config: Configuration = {
             filename: 'index.html',
             template: './public/index.html'
         })
-    ]
+    ],
+    optimization: {
+        // https://webpack.js.org/guides/code-splitting/#entry-dependencies
+        runtimeChunk: 'single'
+    }
 };
 
 export default config;

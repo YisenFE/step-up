@@ -1,5 +1,5 @@
 {
-  "name": "2.base-cfg",
+  "name": "3.base-dup1",
   "private": true,
   "scripts": {
     "build": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" NODE_ENV=none webpack",
