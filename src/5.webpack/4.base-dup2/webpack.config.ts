@@ -20,10 +20,10 @@ const config: Configuration = {
     output: {
         path: path.resolve(__dirname, assetRoot),
         filename: devMode
-            ? 'js/[name].js'
-            : 'js/[name].[fullhash:7].js',
-        // chunkFilename: 'chunk/[name].[id].[fullhash:7].js',
-        assetModuleFilename: 'assets/[hash][ext][query]',
+            ? 'js/[name].[contenthash].js'
+            : 'js/[name].[contenthash].js',
+        // assetModuleFilename: 'assets/[hash][ext][query]',
+        assetModuleFilename: 'assets/[contenthash][ext]',
         clean: true
     },
     // 构建目标 https://webpack.docschina.org/configuration/target/#root
@@ -91,6 +91,11 @@ const config: Configuration = {
         // new BundleAnalyzerPlugin()
     ],
     optimization: {
+        // https://webpack.js.org/guides/code-splitting/#entry-dependencies
+        runtimeChunk: 'single',
+        // https://webpack.docschina.org/guides/caching/#module-identifiers
+        moduleIds: 'deterministic',
+        // chunkIds: 'deterministic',
         splitChunks: {
             cacheGroups: {
                 vendors: {
@@ -109,7 +114,7 @@ const config: Configuration = {
                     },
                     filename: (pathData, assetInfo) => {
                         const isInitial = (pathData.chunk as Chunk).canBeInitial();
-                        return `vendors/${isInitial ? 'initial' : 'async'}/[name].[contenthash].js`;
+                        return `js/vendors/${isInitial ? 'initial' : 'async'}/[name].[contenthash].js`;
                     }
                 },
                 commons: {
@@ -129,13 +134,11 @@ const config: Configuration = {
                     },
                     filename: (pathData, assetInfo) => {
                         const isInitial = (pathData.chunk as Chunk).canBeInitial();
-                        return `commons/${isInitial ? 'initial' : 'async'}/[name].js`;
+                        return `js/commons/${isInitial ? 'initial' : 'async'}/[name].[contenthash].js`;
                     }
                 }
             }
         },
-        // https://webpack.js.org/guides/code-splitting/#entry-dependencies
-        runtimeChunk: 'single'
     }
 };
 

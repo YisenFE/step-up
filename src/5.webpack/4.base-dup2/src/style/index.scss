@@ -1,0 +1,13 @@
+@import './reset.scss';
+body {
+    .demo {
+        color: red;
+        background: url('../assets/result.png') no-repeat;
+        width: 100vw;
+        height: 100vh;
+    }
+    img {
+        width: 300px;
+        height: 300px;
+    }
+}
