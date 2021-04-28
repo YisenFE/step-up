@@ -10,7 +10,7 @@ __metadata:
   resolution: "1.base-ts@workspace:src/5.webpack/1.base-ts"
   dependencies:
     cross-env: ^7.0.3
-    ts-loader: ^8.1.0
+    ts-loader: ^9.1.1
     ts-node: ^9.1.1
     typescript: ^4.2.4
     webpack: ^5.36.0
@@ -26,12 +26,12 @@ __metadata:
     "@types/webpack-dev-server": ^3.11.3
     clean-webpack-plugin: ^4.0.0-alpha.0
     cross-env: ^7.0.3
-    css-loader: ^5.2.1
+    css-loader: ^5.2.4
     html-webpack-plugin: ^5.3.1
     mini-css-extract-plugin: ^1.5.0
-    sass: ^1.32.8
+    sass: ^1.32.11
     sass-loader: ^11.0.1
-    ts-loader: ^8.1.0
+    ts-loader: ^9.1.1
     ts-node: ^9.1.1
     typescript: ^4.2.4
     webpack: ^5.36.0
@@ -48,12 +48,12 @@ __metadata:
     "@types/webpack-dev-server": ^3.11.3
     clean-webpack-plugin: ^4.0.0-alpha.0
     cross-env: ^7.0.3
-    css-loader: ^5.2.1
+    css-loader: ^5.2.4
     html-webpack-plugin: ^5.3.1
     mini-css-extract-plugin: ^1.5.0
-    sass: ^1.32.8
+    sass: ^1.32.11
     sass-loader: ^11.0.1
-    ts-loader: ^8.1.0
+    ts-loader: ^9.1.1
     ts-node: ^9.1.1
     typescript: ^4.2.4
     webpack: ^5.36.0
@@ -68,19 +68,19 @@ __metadata:
   dependencies:
     "@types/lodash": ^4.14.168
     "@types/mini-css-extract-plugin": ^1.4.2
-    "@types/react": ^17.0.3
+    "@types/react": ^17.0.4
     "@types/webpack-bundle-analyzer": ^4.4.0
     "@types/webpack-dev-server": ^3.11.3
     clean-webpack-plugin: ^4.0.0-alpha.0
     cross-env: ^7.0.3
-    css-loader: ^5.2.1
+    css-loader: ^5.2.4
     html-webpack-plugin: ^5.3.1
     lodash: ^4.17.21
     mini-css-extract-plugin: ^1.5.0
     react: ^17.0.2
-    sass: ^1.32.8
+    sass: ^1.32.11
     sass-loader: ^11.0.1
-    ts-loader: ^8.1.0
+    ts-loader: ^9.1.1
     ts-node: ^9.1.1
     typescript: ^4.2.4
     vue: ^2.6.12
@@ -97,7 +97,7 @@ __metadata:
   dependencies:
     "@types/express": ^4.17.11
     "@types/fb-watchman": ^2.0.0
-    chalk: ^4.1.0
+    chalk: ^4.1.1
     express: ^4.17.1
     fb-watchman: ^2.0.1
     ts-node: ^9.1.1
@@ -114,8 +114,8 @@ __metadata:
     "@types/koa-bodyparser": ^5.0.2
     "@types/koa-static": ^4.0.1
     "@types/mime": ^2.0.3
-    "@types/node": ^14.14.37
-    chalk: ^4.1.0
+    "@types/node": ^15.0.1
+    chalk: ^4.1.1
     fb-watchman: ^2.0.1
     koa: ^2.13.1
     koa-bodyparser: ^4.3.0
@@ -130,7 +130,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "5.http-header@workspace:src/2.node/2.4.http/5.http-header"
   dependencies:
-    "@types/node": ^14.14.37
+    "@types/node": ^15.0.1
     nodemon: ^2.0.7
     ts-node: ^9.1.1
     typescript: ^4.2.4
@@ -142,7 +142,19 @@ __metadata:
   resolution: "5.tree-shaking@workspace:src/5.webpack/5.tree-shaking"
   dependencies:
     cross-env: ^7.0.3
-    ts-loader: ^8.1.0
+    ts-loader: ^9.1.1
+    ts-node: ^9.1.1
+    typescript: ^4.2.4
+    webpack: ^5.36.0
+    webpack-cli: ^4.6.0
+  languageName: unknown
+  linkType: soft
+
+"6.prod@workspace:src/5.webpack/6.prod":
+  version: 0.0.0-use.local
+  resolution: "6.prod@workspace:src/5.webpack/6.prod"
+  dependencies:
+    ts-loader: ^9.1.1
     ts-node: ^9.1.1
     typescript: ^4.2.4
     webpack: ^5.36.0
@@ -508,17 +520,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
+"@types/node@npm:*, @types/node@npm:^15.0.1":
   version: 15.0.1
   resolution: "@types/node@npm:15.0.1"
   checksum: 4e4fb69394efb224272ad7c6b6dc16a381b97e46a8f3c21d33fec51ef13a4d635f571b446d127eae333ea6a763f304b787f4b3f73e24e1f3b05a21b481900dfb
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^14.14.16, @types/node@npm:^14.14.37":
-  version: 14.14.43
-  resolution: "@types/node@npm:14.14.43"
-  checksum: b7a9e6df7c2a6f90e783bfe6ef358cc2c3ff4e1dfcea56b83349cd3feefd02a9b6fa54b443983694b4398a06257d871c947abeae03bd0d39fd71981161d61765
   languageName: node
   linkType: hard
 
@@ -543,7 +548,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^17.0.3":
+"@types/react@npm:^17.0.4":
   version: 17.0.4
   resolution: "@types/react@npm:17.0.4"
   dependencies:
@@ -1542,7 +1547,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^4.1.0":
+"chalk@npm:^4.1.0, chalk@npm:^4.1.1":
   version: 4.1.1
   resolution: "chalk@npm:4.1.1"
   dependencies:
@@ -1835,7 +1840,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^7.0.0, commander@npm:^7.1.0":
+"commander@npm:^7.0.0, commander@npm:^7.2.0":
   version: 7.2.0
   resolution: "commander@npm:7.2.0"
   checksum: bdc0eca5e25cd24af8440163d3c9a996785bbac4b49a590365699cdc1ed08cefbac8f268153208ab2bc5dc3cb1d3fb573fd1590c681e36e371342186bd331a4c
@@ -2028,7 +2033,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-loader@npm:^5.2.1":
+"css-loader@npm:^5.2.4":
   version: 5.2.4
   resolution: "css-loader@npm:5.2.4"
   dependencies:
@@ -2509,18 +2514,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enhanced-resolve@npm:^4.0.0":
-  version: 4.5.0
-  resolution: "enhanced-resolve@npm:4.5.0"
-  dependencies:
-    graceful-fs: ^4.1.2
-    memory-fs: ^0.5.0
-    tapable: ^1.0.0
-  checksum: 72e679343f3ca6f2f84b1259460705fa29d46f0b806fa562db96edeb7826357a97ba9ccb61a07cdb05f51c1b4d2f5b544a2e4a6c257d7395a0c9b6e727f86d08
-  languageName: node
-  linkType: hard
-
-"enhanced-resolve@npm:^5.8.0":
+"enhanced-resolve@npm:^5.0.0, enhanced-resolve@npm:^5.8.0":
   version: 5.8.0
   resolution: "enhanced-resolve@npm:5.8.0"
   dependencies:
@@ -3299,7 +3293,7 @@ fsevents@~2.3.1:
   version: 0.0.0-use.local
   resolution: "handsome-server@workspace:src/2.node/2.3.npm/package"
   dependencies:
-    typescript: ^4.1.3
+    typescript: ^4.2.4
   bin:
     handsome: ./dist/cli/index.js
   languageName: unknown
@@ -3619,15 +3613,15 @@ fsevents@~2.3.1:
     "@types/fb-watchman": ^2.0.0
     "@types/mime": ^2.0.3
     "@types/mz": ^2.7.3
-    chalk: ^4.1.0
-    commander: ^7.1.0
+    chalk: ^4.1.1
+    commander: ^7.2.0
     ejs: ^3.1.6
     fb-watchman: ^2.0.1
     mime: ^2.5.2
     mz: ^2.7.0
     nodemon: ^2.0.7
     ts-node: ^9.1.1
-    typescript: ^4.2.3
+    typescript: ^4.2.4
   bin:
     http-server: ./dist/src/index.js
   languageName: unknown
@@ -4735,16 +4729,6 @@ fsevents@~2.3.1:
     errno: ^0.1.3
     readable-stream: ^2.0.1
   checksum: ba79207118e62d7e3d13b6a00c1b0508b506a7f281e26c5efcc85e7ba0c9e11eda36a242b42f07067367c4b8547b1e905096293fa65dc6b3dbdd8f825b787dd9
-  languageName: node
-  linkType: hard
-
-"memory-fs@npm:^0.5.0":
-  version: 0.5.0
-  resolution: "memory-fs@npm:0.5.0"
-  dependencies:
-    errno: ^0.1.3
-    readable-stream: ^2.0.1
-  checksum: deb916f33ca09215d6ad58db30854bbf36aaca86e018dcbbbdb7c6160661e8c0b9acdcc23c9931fc6dcd62f3dd5318a7ecab519e3688f7787d0833e5f48c0d0a
   languageName: node
   linkType: hard
 
@@ -6323,12 +6307,12 @@ resolve@^1.9.0:
   resolution: "root@workspace:."
   dependencies:
     "@types/inquirer": ^7.3.1
-    "@types/node": ^14.14.16
+    "@types/node": ^15.0.1
     co: ^4.6.0
     inquirer: ^8.0.0
     mz: ^2.7.0
     ts-node: ^9.1.1
-    typescript: ^4.1.3
+    typescript: ^4.2.4
   languageName: unknown
   linkType: soft
 
@@ -6414,7 +6398,7 @@ resolve@^1.9.0:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.32.8":
+"sass@npm:^1.32.11":
   version: 1.32.11
   resolution: "sass@npm:1.32.11"
   dependencies:
@@ -7095,13 +7079,6 @@ resolve@^1.9.0:
   languageName: node
   linkType: hard
 
-"tapable@npm:^1.0.0":
-  version: 1.1.3
-  resolution: "tapable@npm:1.1.3"
-  checksum: b2c2ab20260394b867fd249d8b6ab3e4645e00f9cce16b558b0de5a86291ef05f536f578744549d1618c9032c7f99bc1d6f68967e4aa11cb0dca4461dc4714bc
-  languageName: node
-  linkType: hard
-
 "tapable@npm:^2.0.0, tapable@npm:^2.1.1, tapable@npm:^2.2.0":
   version: 2.2.0
   resolution: "tapable@npm:2.2.0"
@@ -7292,19 +7269,18 @@ resolve@^1.9.0:
   languageName: node
   linkType: hard
 
-"ts-loader@npm:^8.1.0":
-  version: 8.2.0
-  resolution: "ts-loader@npm:8.2.0"
+"ts-loader@npm:^9.1.1":
+  version: 9.1.1
+  resolution: "ts-loader@npm:9.1.1"
   dependencies:
     chalk: ^4.1.0
-    enhanced-resolve: ^4.0.0
-    loader-utils: ^2.0.0
+    enhanced-resolve: ^5.0.0
     micromatch: ^4.0.0
     semver: ^7.3.4
   peerDependencies:
     typescript: "*"
     webpack: "*"
-  checksum: c34c66e5193b234e9b2bca3a6ad21a25fc22fb05ac1c9b2e3b6c655adc431033bac60a36c1d0c9caea473ea91748e29f41bf91f25fad3930a32c06cbdee7d9f3
+  checksum: d74d6fa6846b27763ae5927dc0f07d156909e8d5302e1514668da7404c89ad0494b656b6a971a89c344d34d419b5b63db24346cfea1a4b03a2ee539b66d10629
   languageName: node
   linkType: hard
 
@@ -7383,7 +7359,7 @@ resolve@^1.9.0:
   languageName: node
   linkType: hard
 
-"typescript@^4.1.3, typescript@^4.2.3, typescript@^4.2.4":
+typescript@^4.2.4:
   version: 4.2.4
   resolution: "typescript@npm:4.2.4"
   bin:
@@ -7393,7 +7369,7 @@ resolve@^1.9.0:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.1.3#builtin<compat/typescript>, typescript@patch:typescript@^4.2.3#builtin<compat/typescript>, typescript@patch:typescript@^4.2.4#builtin<compat/typescript>":
+"typescript@patch:typescript@^4.2.4#builtin<compat/typescript>":
   version: 4.2.4
   resolution: "typescript@patch:typescript@npm%3A4.2.4#builtin<compat/typescript>::version=4.2.4&hash=a45b0e"
   bin:
