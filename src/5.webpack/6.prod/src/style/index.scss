@@ -4,11 +4,12 @@ body {
     .demo {
         color: red;
         background: url('../assets/result.png') no-repeat;
-        width: 100vw;
-        height: 100vh;
+        width: 200px;
+        height: 200px;
     }
     img {
         width: 300px;
         height: 300px;
+        transform: scale(0.5);
     }
 }

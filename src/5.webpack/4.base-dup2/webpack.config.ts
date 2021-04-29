@@ -59,11 +59,11 @@ const config: Configuration = {
                 test: {
                     or: [
                         /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-                        /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-                        /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+                        // /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+                        // /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
                     ]
                 },
-                type: 'asset',
+                type: 'asset/inline',
                 // https://webpack.docschina.org/configuration/module/#ruleparserdataurlcondition
                 parser: {
                     dataUrlCondition: {

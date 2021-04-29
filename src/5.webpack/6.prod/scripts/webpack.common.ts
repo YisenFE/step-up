@@ -1,0 +1,80 @@
+
+// Types
+import { Configuration } from 'webpack';
+
+// Modules
+import { resolve } from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { images, svg, media } from './config/assets';
+
+export default function (nodeEnv: string): Configuration {
+    const isProductionMode = nodeEnv === 'production';
+    return {
+        mode: isProductionMode ? 'production' : 'development',
+        entry: {
+            index: './src/index.ts',
+            another: './src/another-module.ts'
+        },
+        output: {
+            path: resolve(__dirname, '../dist'),
+            filename: isProductionMode ?
+                `js/[name].[contenthash].js` : 'js/[name].js',
+            clean: true
+        },
+        // 构建目标 https://webpack.docschina.org/configuration/target/#root
+        target: 'browserslist',
+        stats: 'normal',
+        module: {
+            rules: [
+                { test: /.tsx?$/, use: 'ts-loader', exclude: /node_modules/ },
+                {
+                    test: /.css$/,
+                    use: [
+                        isProductionMode
+                            ? {
+                                loader: MiniCssExtractPlugin.loader,
+                                options: {
+                                    publicPath: '/'
+                                }
+                            } : 'style-loader',
+                        'css-loader',
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                postcssOptions: {
+                                    plugins: [
+                                    ]
+                                }
+                            }
+                        },
+                        'sass-loader'
+                    ]
+                },
+                images,
+                svg,
+                media
+            ]
+        },
+        resolve: {
+            extensions: ['.tsx', '.ts', '.js']
+        },
+        plugins: [
+            new MiniCssExtractPlugin({
+                filename: isProductionMode
+                    ? 'css/[name].[contenthash].css' : 'css/[name].css'
+            }),
+            new HtmlWebpackPlugin({
+                filename: 'index.html',
+                template: './public/index.html'
+            })
+        ],
+        optimization: {
+            // https://webpack.js.org/guides/code-splitting/#entry-dependencies
+            runtimeChunk: 'single',
+            // https://webpack.docschina.org/guides/caching/#module-identifiers
+            moduleIds: 'deterministic',
+            // chunkIds: 'deterministic',
+        }
+    };
+}
