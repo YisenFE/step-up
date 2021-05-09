@@ -11,7 +11,4 @@ export const deferred = function() {
         dfd.reject = reject;
     });
     return dfd;
-}
-export default {
-
-}
+};

@@ -17,10 +17,10 @@
   "devDependencies": {
     "@types/fb-watchman": "^2.0.0",
     "@types/koa": "^2.13.1",
-    "@types/koa-bodyparser": "^5.0.2",
+    "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-static": "^4.0.1",
     "@types/mime": "^2.0.3",
-    "@types/node": "^15.0.1",
+    "@types/node": "^15.0.2",
     "chalk": "^4.1.1",
     "fb-watchman": "^2.0.1",
     "ts-node": "^9.1.1",
