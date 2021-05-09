@@ -1,4 +1,4 @@
-import './style/index.scss';
+// import './style/index.scss';
 import _ from 'lodash';
 // import Vue from 'vue';
 import obj from './common/obj';

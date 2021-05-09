@@ -6,15 +6,18 @@ import { Configuration } from 'webpack';
 import { resolve } from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { images, svg, media } from './config/assets';
 
 export default function (nodeEnv: string): Configuration {
     const isProductionMode = nodeEnv === 'production';
-    return {
+    const config: Configuration = {
         mode: isProductionMode ? 'production' : 'development',
         entry: {
-            index: './src/index.ts',
-            another: './src/another-module.ts'
+            // index: './src/index.ts',
+            // https://webpack.docschina.org/guides/entry-advanced/
+            index: ['./src/index.ts', './src/style/index.scss'],
+            another: './src/another-module.ts',
         },
         output: {
             path: resolve(__dirname, '../dist'),
@@ -77,4 +80,10 @@ export default function (nodeEnv: string): Configuration {
             // chunkIds: 'deterministic',
         }
     };
+
+    if (process.env.bundle_analyze_report === 'true') {
+        config.plugins?.push(new BundleAnalyzerPlugin())
+    }
+
+    return config;
 }

@@ -29,7 +29,7 @@ function genAssetRule(dir: string, test: RegExp): RuleSetRule {
     };
 }
 
-function genResourceRule(dir: string, test: RegExp): RuleSetRule {
+function genAssetResourceRule(dir: string, test: RegExp): RuleSetRule {
     return {
         test,
         type: 'asset/resource',
@@ -37,11 +37,14 @@ function genResourceRule(dir: string, test: RegExp): RuleSetRule {
     };
 }
 
-function genInlineRule(dir: string, test: RegExp): RuleSetRule {
-    return { test, type: 'asset/inline' };
+function genAssetInlineRule(dir: string, test: RegExp): RuleSetRule {
+    return {
+        test,
+        type: 'asset/inline'
+    };
 }
 
 export const images = genAssetRule('img', /\.(png|jpe?g|gif|webp)(\?.*)?$/);
-export const svg = genResourceRule('img', /\.(svg)(\?.*)?$/);
+export const svg = genAssetResourceRule('img', /\.(svg)(\?.*)?$/);
 export const media = genAssetRule('fonts', /\.(woff2?|eot|ttf|otf)(\?.*)?$/i);
 
